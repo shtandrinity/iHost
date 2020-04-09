@@ -18,6 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.libraries.places.api.Places;
@@ -25,9 +28,13 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Arrays;
 import java.util.Locale;
+
+//FIREBASE AUTHENTHIFICATION -- https://www.youtube.com/watch?v=TwHmrZxiPA8
 
 
 public class FragmentNewEvent extends Fragment {
@@ -40,11 +47,13 @@ public class FragmentNewEvent extends Fragment {
     private TextInputLayout etConfirmPassword;
     private TextInputLayout etEmail;
 
+    FirebaseAuth firebaseAuth;
+    private JsonPlaceHolder jsonPlaceHolder;
+
     private boolean locationIsSelected = false;
 
     GoogleMap map;
     private AutocompleteSupportFragment autocompleteFragment;
-
 
     public FragmentNewEvent() {}
 
@@ -62,6 +71,7 @@ public class FragmentNewEvent extends Fragment {
         etConfirmPassword = v.findViewById(R.id.lConfirmPassword);
         etEmail = v.findViewById(R.id.lEmail);
 
+        firebaseAuth = FirebaseAuth.getInstance();
 
         autocompleteFragment = (AutocompleteSupportFragment) this.getChildFragmentManager().findFragmentById(R.id.autocomplete);
         Places.initialize(getActivity().getApplicationContext(), getString(R.string.map_key), Locale.US);
@@ -83,14 +93,21 @@ public class FragmentNewEvent extends Fragment {
 
             @Override
             public void onError(@NonNull Status status) {
-
+                Toast.makeText(getActivity()
+                        .getApplicationContext(), "Error ! " + status.getStatusMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
         btnNewEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                confirmInput(v);
+                if(confirmInput(v)){
+                    signInHost();
+                }
+                else{
+                    Toast.makeText(getActivity()
+                            .getApplicationContext(), "Smth went wrong", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -212,10 +229,45 @@ public class FragmentNewEvent extends Fragment {
         }
     }
 
-    public void confirmInput(View v){
+    public boolean confirmInput(View v){
         if(!validateLocationInput() | !validateEventNameInput() | !validateLoginInput() | !validatePasswordInput() | !validateConfirmPasswordInput() | !validateEmailInput()){
-            return;
+            return false;
         }
+        else{
+            return true;
+        }
+    }
+
+    public void signInHost(){
+        String email = etEmail.getEditText().getText().toString().trim();
+        String password = etConfirmPassword.getEditText().getText().toString();
+        firebaseAuth.createUserWithEmailAndPassword(email,password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(getActivity()
+                                    .getApplicationContext(), "Host is Created", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(getActivity()
+                                    .getApplicationContext(), "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                });
+        firebaseAuth.createUserWithEmailAndPassword(email,password)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity()
+                                .getApplicationContext(), "Error ! " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public void addNewUserToDatabase(){
+
     }
 
 //    @Override
