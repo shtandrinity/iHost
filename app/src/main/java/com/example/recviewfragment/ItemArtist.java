@@ -1,15 +1,15 @@
 package com.example.recviewfragment;
 
-public class ItemList {
+public class ItemArtist {
 
     private int id;
     private String name;
     private String phone;
     private boolean isLocated;
 
-    public ItemList() {}
+    public ItemArtist() {}
 
-    public ItemList(int id, String name, String phone, boolean isLocated) {
+    public ItemArtist(int id, String name, String phone, boolean isLocated) {
         this.id = id;
         this.name = name;
         this.phone = phone;

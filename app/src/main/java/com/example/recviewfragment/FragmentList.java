@@ -23,7 +23,7 @@ public class FragmentList extends Fragment{
 
     View v;
     private JsonPlaceHolder jsonPlaceHolder;
-    private List<ItemList> lstArtists = new ArrayList<>();
+    private List<ItemArtist> lstItemArtists = new ArrayList<>();
     private RecyclerViewAdapter recyclerAdapter;
 
     public FragmentList(){}
@@ -33,15 +33,15 @@ public class FragmentList extends Fragment{
         return fragmentList;
     }
 
-    private CallbackInterface callbackInterface = new CallbackInterface() {
+    private CallbackInterfaceArtistsList callbackInterfaceArtistsList = new CallbackInterfaceArtistsList() {
         @Override
-        public void onSuccess(List<ItemList> list) {
-            for (ItemList itemList : list) {
-                lstArtists.add(new ItemList(
-                        itemList.getId(),
-                        itemList.getName(),
-                        itemList.getPhone(),
-                        itemList.getIsLocated()));
+        public void onSuccess(List<ItemArtist> list) {
+            for (ItemArtist itemArtist : list) {
+                lstItemArtists.add(new ItemArtist(
+                        itemArtist.getId(),
+                        itemArtist.getName(),
+                        itemArtist.getPhone(),
+                        itemArtist.getIsLocated()));
             }
             recyclerAdapter.notifyDataSetChanged();
         }
@@ -57,7 +57,7 @@ public class FragmentList extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_list, container, false);
         RecyclerView myRecyclerView = (RecyclerView) v.findViewById(R.id.list_recyclerView);
-        recyclerAdapter = new RecyclerViewAdapter(getContext(), lstArtists);
+        recyclerAdapter = new RecyclerViewAdapter(getContext(), lstItemArtists);
         myRecyclerView.setLayoutManager(new LinearLayoutManager((getActivity())));
         myRecyclerView.setAdapter(recyclerAdapter);
         recyclerAdapter.notifyDataSetChanged();
@@ -73,19 +73,19 @@ public class FragmentList extends Fragment{
     }
 
     private void getList(){
-        Call<List<ItemList>> call = jsonPlaceHolder.getItemList();
-        call.enqueue(new Callback<List<ItemList>>() {
+        Call<List<ItemArtist>> call = jsonPlaceHolder.getItemList();
+        call.enqueue(new Callback<List<ItemArtist>>() {
 
             @Override
-            public void onResponse(Call<List<ItemList>> call, Response<List<ItemList>> response) {
+            public void onResponse(Call<List<ItemArtist>> call, Response<List<ItemArtist>> response) {
                 if(response.isSuccessful()) {
-                    callbackInterface.onSuccess(response.body());
+                    callbackInterfaceArtistsList.onSuccess(response.body());
                 }
             }
 
             @Override
-            public void onFailure(Call<List<ItemList>> call, Throwable t) {
-                callbackInterface.onFailure(t.toString());
+            public void onFailure(Call<List<ItemArtist>> call, Throwable t) {
+                callbackInterfaceArtistsList.onFailure(t.toString());
             }
         });
     }

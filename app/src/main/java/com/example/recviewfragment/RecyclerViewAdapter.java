@@ -13,10 +13,10 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
-    Context context;
-    List<ItemList> mData;
+    private Context context;
+    private List<ItemArtist> mData;
 
-    public RecyclerViewAdapter(Context context, List<ItemList> mData) {
+    RecyclerViewAdapter(Context context, List<ItemArtist> mData) {
         this.context = context;
         this.mData = mData;
     }
@@ -26,13 +26,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return mData.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    static class MyViewHolder extends RecyclerView.ViewHolder{
 
         private TextView tvArtistName;
 
-        public MyViewHolder(@NonNull View itemView) {
+        MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvArtistName = (TextView) itemView.findViewById(R.id.artist);
+            tvArtistName = (TextView) itemView.findViewById(R.id.itemArtist);
         }
     }
 
@@ -40,9 +40,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v;
-        v = LayoutInflater.from(context).inflate(R.layout.item_list, parent, false);
-        MyViewHolder myViewHolder = new MyViewHolder(v);
-        return myViewHolder;
+        v = LayoutInflater.from(context).inflate(R.layout.item_artist, parent, false);
+        return new MyViewHolder(v);
     }
 
     @Override

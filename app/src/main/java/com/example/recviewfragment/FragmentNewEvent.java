@@ -34,12 +34,23 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Arrays;
 import java.util.Locale;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 //FIREBASE AUTHENTHIFICATION -- https://www.youtube.com/watch?v=TwHmrZxiPA8
 
 
 public class FragmentNewEvent extends Fragment {
 
     private View v;
+
+    private String email;
+    private String eventName;
+    private String login;
+    private String password;
+    public LatLng location;
+
     private MaterialButton btnNewEvent;
     private TextInputLayout etEventName;
     private TextInputLayout etLogin;
@@ -64,40 +75,22 @@ public class FragmentNewEvent extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v =  inflater.inflate(R.layout.fragment_new_event, container, false);
-        btnNewEvent = v.findViewById(R.id.btnNewEvent);
-        etEventName = v.findViewById(R.id.lName);
-        etLogin = v.findViewById(R.id.lLogin);
-        etPassword = v.findViewById(R.id.lPassword);
-        etConfirmPassword = v.findViewById(R.id.lConfirmPassword);
-        etEmail = v.findViewById(R.id.lEmail);
 
-        firebaseAuth = FirebaseAuth.getInstance();
+        authorizeUi();
 
-        autocompleteFragment = (AutocompleteSupportFragment) this.getChildFragmentManager().findFragmentById(R.id.autocomplete);
-        Places.initialize(getActivity().getApplicationContext(), getString(R.string.map_key), Locale.US);
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME));
-
-        View clearButton = autocompleteFragment.getView().findViewById(R.id.places_autocomplete_clear_button);
-        clearButton.setOnClickListener(view -> {
-            autocompleteFragment.setText("");
-            locationIsSelected = false;
-        });
-
-        autocompleteFragment.setHint("Search a Location");
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull com.google.android.libraries.places.api.model.Place place) {
-                final LatLng latLng = place.getLatLng();
+                location = place.getLatLng();
                 locationIsSelected = true;
             }
 
             @Override
             public void onError(@NonNull Status status) {
-                Toast.makeText(getActivity()
-                        .getApplicationContext(), "Error ! " + status.getStatusMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity()
+//                        .getApplicationContext(), "Error ! " + status.getStatusMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
         btnNewEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,16 +104,37 @@ public class FragmentNewEvent extends Fragment {
             }
         });
 
-//        autocompleteFragment = (AutocompleteSupportFragment) this.getChildFragmentManager().findFragmentById(R.id.autocomplete);
-//        autocompleteFragment.setOnPlaceSelectedListener((AutocompleteSupportFragment) this);
-//        autocompleteFragment.setHint("Search a Location");
-
 //        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
 //        mapFragment.getMapAsync(this);
 
         return v;
     }
 
+    //Authorizing User Interface & variables
+    public void authorizeUi(){
+        btnNewEvent = v.findViewById(R.id.btnNewEvent);
+        etEventName = v.findViewById(R.id.lName);
+        etLogin = v.findViewById(R.id.lLogin);
+        etPassword = v.findViewById(R.id.lPassword);
+        etConfirmPassword = v.findViewById(R.id.lConfirmPassword);
+        etEmail = v.findViewById(R.id.lEmail);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        autocompleteFragment = (AutocompleteSupportFragment) this.getChildFragmentManager().findFragmentById(R.id.autocomplete);
+        Places.initialize(getActivity().getApplicationContext(), getString(R.string.map_key), Locale.US);
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME));
+        autocompleteFragment.setHint("Search a Location");
+
+        //If clear button in AutocompleteSupportFragment being pressed - do locationIsSelected = false;
+        View clearButton = autocompleteFragment.getView().findViewById(R.id.places_autocomplete_clear_button);
+        clearButton.setOnClickListener(view -> {
+            autocompleteFragment.setText("");
+            locationIsSelected = false;
+        });
+    }
+
+    //Removing Google AutocompleteSupportFragment when not needed
     @Override
     public void onDestroyView() {
         if (autocompleteFragment != null) {
@@ -131,8 +145,8 @@ public class FragmentNewEvent extends Fragment {
     }
 
     private boolean validateEmailInput(){
-        String emailInput = etEmail.getEditText().getText().toString().trim();
-        if(emailInput.isEmpty()){
+        email = etEmail.getEditText().getText().toString().trim();
+        if(email.isEmpty()){
             etEmail.setError("Please provide an email");
             return false;
         }
@@ -144,7 +158,7 @@ public class FragmentNewEvent extends Fragment {
     }
 
     public boolean validateEventNameInput(){
-        String eventName = etEventName.getEditText().getText().toString();
+        eventName = etEventName.getEditText().getText().toString();
         if (eventName.isEmpty()){
             etEventName.setError("Please provide event's name");
             return false;
@@ -160,7 +174,7 @@ public class FragmentNewEvent extends Fragment {
     }
 
     public boolean validateLoginInput(){
-        String login = etLogin.getEditText().getText().toString();
+        login = etLogin.getEditText().getText().toString();
         if (login.isEmpty()){
             etLogin.setError("Please provide an login");
             return false;
@@ -176,7 +190,7 @@ public class FragmentNewEvent extends Fragment {
     }
 
     public boolean validatePasswordInput(){
-        String password = etPassword.getEditText().getText().toString();
+        password = etPassword.getEditText().getText().toString();
         if (password.isEmpty()){
             etPassword.setError("Please provide the password");
             return false;
@@ -229,6 +243,7 @@ public class FragmentNewEvent extends Fragment {
         }
     }
 
+    //Making sure all the fields are being properly entered
     public boolean confirmInput(View v){
         if(!validateLocationInput() | !validateEventNameInput() | !validateLoginInput() | !validatePasswordInput() | !validateConfirmPasswordInput() | !validateEmailInput()){
             return false;
@@ -238,6 +253,7 @@ public class FragmentNewEvent extends Fragment {
         }
     }
 
+    //Adding new host to a Firebase
     public void signInHost(){
         String email = etEmail.getEditText().getText().toString().trim();
         String password = etConfirmPassword.getEditText().getText().toString();
@@ -248,6 +264,7 @@ public class FragmentNewEvent extends Fragment {
                         if(task.isSuccessful()){
                             Toast.makeText(getActivity()
                                     .getApplicationContext(), "Host is Created", Toast.LENGTH_SHORT).show();
+                            callbackInterfaceHostSignIn.onSuccess();
                         }
                         else{
                             Toast.makeText(getActivity()
@@ -266,9 +283,32 @@ public class FragmentNewEvent extends Fragment {
                 });
     }
 
-    public void addNewUserToDatabase(){
+    //Adding new host after he/she is being added to Firebase
+    private CallbackInterfaceHostSignIn callbackInterfaceHostSignIn = new CallbackInterfaceHostSignIn() {
+        @Override
+        public void onSuccess() {
+            jsonPlaceHolder = ApiClient.getInterface();
+            double latitude = location.latitude;
+            double longitude = location.longitude;
+            ItemHost itemHost = new ItemHost(login, password, email, eventName, latitude, longitude);
+            Call <ItemHost> call = jsonPlaceHolder.createArtist(itemHost);
+            call.enqueue(new Callback<ItemHost>() {
+                @Override
+                public void onResponse(Call<ItemHost> call, Response<ItemHost> response) {
+                    if(!response.isSuccessful()){
+                        Toast.makeText(getActivity()
+                                .getApplicationContext(), "Code" + response.code(), Toast.LENGTH_SHORT).show();
+                    }
+                }
 
-    }
+                @Override
+                public void onFailure(Call<ItemHost> call, Throwable t) {
+                    Toast.makeText(getActivity()
+                            .getApplicationContext(), "Error message" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    };
 
 //    @Override
 //    public void onMapReady(GoogleMap googleMap) {
