@@ -17,15 +17,12 @@ public class FragmentHostUnlogged extends Fragment {
 
     private View v;
 
-    private MaterialButton btnNewEvent;
-    private MaterialButton btnLogin;
     private final String FRAGMENT_TAG = "host_screen";
 
     public FragmentHostUnlogged(){}
 
-    public FragmentHostUnlogged newInstance(){
-        FragmentHostUnlogged fragmentHostUnlogged = new FragmentHostUnlogged();
-        return fragmentHostUnlogged;
+    FragmentHostUnlogged newInstance(){
+        return new FragmentHostUnlogged();
     }
 
     // The onCreateView method is called when Fragment should create its View object hierarchy,
@@ -34,19 +31,12 @@ public class FragmentHostUnlogged extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Defines the xml file for the fragment
-        v = inflater.inflate(R.layout.fragment_host, container, false);
-        return v;
-    }
+        v = inflater.inflate(R.layout.fragment_host_unlogged, container, false);
 
+        MaterialButton btnNewEvent = (MaterialButton) v.findViewById(R.id.btnNewEvent_host);
+        MaterialButton btnLogin_host = (MaterialButton) v.findViewById(R.id.btnLogin_host);
 
-    // This event is triggered soon after onCreateView().
-    // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        btnNewEvent = (MaterialButton) view.findViewById(R.id.newEventBtn);
-        btnLogin = (MaterialButton) view.findViewById(R.id.loginBtn);
-
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        btnLogin_host.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentTransaction trans = getFragmentManager().beginTransaction();
@@ -69,6 +59,9 @@ public class FragmentHostUnlogged extends Fragment {
                 trans.commit();
             }
         });
+
+        return v;
     }
+
 }
 

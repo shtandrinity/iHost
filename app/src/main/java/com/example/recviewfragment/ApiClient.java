@@ -4,7 +4,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    public static String baseURL = "https://b6f2a8dc.ngrok.io/";
+    public static String baseURL = "https://6e0b7c2d.ngrok.io/";
     public static Retrofit retrofit = null;
     public static JsonPlaceHolder instance = null;
 

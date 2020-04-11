@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -58,11 +60,10 @@ public class FragmentNewEvent extends Fragment {
     private TextInputLayout etConfirmPassword;
     private TextInputLayout etEmail;
 
+    private boolean isLoginExists;
     FirebaseAuth firebaseAuth;
     private JsonPlaceHolder jsonPlaceHolder;
-
     private boolean locationIsSelected = false;
-
     GoogleMap map;
     private AutocompleteSupportFragment autocompleteFragment;
 
@@ -76,7 +77,7 @@ public class FragmentNewEvent extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v =  inflater.inflate(R.layout.fragment_new_event, container, false);
 
-        authorizeUi();
+        initializeUi();
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -94,7 +95,7 @@ public class FragmentNewEvent extends Fragment {
         btnNewEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(confirmInput(v)){
+                if(validateInput(v)){
                     signInHost();
                 }
                 else{
@@ -111,7 +112,7 @@ public class FragmentNewEvent extends Fragment {
     }
 
     //Authorizing User Interface & variables
-    public void authorizeUi(){
+    public void initializeUi(){
         btnNewEvent = v.findViewById(R.id.btnNewEvent);
         etEventName = v.findViewById(R.id.lName);
         etLogin = v.findViewById(R.id.lLogin);
@@ -173,14 +174,52 @@ public class FragmentNewEvent extends Fragment {
         }
     }
 
+    private CallbackInterfaceLoginExists callbackInterfaceLoginExists = new CallbackInterfaceLoginExists() {
+        @Override
+        public boolean onSuccess() {
+            login = etLogin.getEditText().getText().toString().trim();
+
+            jsonPlaceHolder = ApiClient.getInterface();
+            Call<List<ItemHost>> call = jsonPlaceHolder.getHostByLogin(login);
+            call.enqueue(new Callback<List<ItemHost>>() {
+                @Override
+                public void onResponse(Call<List<ItemHost>> call, Response<List<ItemHost>> response) {
+                    if (!(response.body() == null)){
+                        isLoginExists = false;
+                    }
+                    else{
+                        isLoginExists = true;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<ItemHost>> call, Throwable t) {
+                    Toast.makeText(getActivity()
+                            .getApplicationContext(), "Error message" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("Error code is:", t.getMessage());
+                    isLoginExists = true;
+                }
+            });
+            return isLoginExists;
+        }
+    };
+
     public boolean validateLoginInput(){
-        login = etLogin.getEditText().getText().toString();
+        login = etLogin.getEditText().getText().toString().trim();
         if (login.isEmpty()){
-            etLogin.setError("Please provide an login");
+            etLogin.setError("Please provide login");
             return false;
         }
         else if(login.length() > 15){
             etLogin.setError("Login is too long");
+            return false;
+        }
+        else if(callbackInterfaceLoginExists.onSuccess()){
+            etLogin.setError("Such a login already exists");
+            return false;
+        }
+        else if(login.contains(" ")){
+            etLogin.setError("Please create a login with no spaces");
             return false;
         }
         else{
@@ -197,6 +236,10 @@ public class FragmentNewEvent extends Fragment {
         }
         else if(password.length() <= 8 || password.length() > 15){
             etPassword.setError("Password should be >8 and <15");
+            return false;
+        }
+        else if(password.contains(" ")){
+            etLogin.setError("Please create password with no spaces");
             return false;
         }
         else{
@@ -244,13 +287,11 @@ public class FragmentNewEvent extends Fragment {
     }
 
     //Making sure all the fields are being properly entered
-    public boolean confirmInput(View v){
+    public boolean validateInput(View v){
         if(!validateLocationInput() | !validateEventNameInput() | !validateLoginInput() | !validatePasswordInput() | !validateConfirmPasswordInput() | !validateEmailInput()){
             return false;
         }
-        else{
-            return true;
-        }
+        else return true;
     }
 
     //Adding new host to a Firebase

@@ -6,12 +6,17 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 //RETROFIT post requests -- https://www.youtube.com/watch?v=GP5OyYDu_mU&t=5s
 
 public interface JsonPlaceHolder {
-    @GET("artists")                                                                                   //https://jsonplaceholder.typicode.com/posts on API
-    Call<List<ItemArtist>> getItemList();                                                                     //get the list of Posts from API
+    @GET("artists")
+    Call<List<ItemArtist>> getItemList();                                                           
+
+    @GET("hosts")                                                                                   //Search HOSTS by login
+    Call<List<ItemHost>> getHostByLogin(@Query("login") String login);
 
     @POST("hosts")
     Call<ItemHost> createArtist(@Body ItemHost itemHost);
