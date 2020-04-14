@@ -6,30 +6,33 @@
     android:background="@color/colorPrimaryDark"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<!--    <at.markushi.ui.CircleButton-->
-<!--        android:id="@+id/btnBack"-->
-<!--        android:layout_width="64dip"-->
-<!--        android:layout_height="64dip"-->
-<!--        android:src="@drawable/arrow_down"-->
-<!--        app:cb_color="@color/colorPrimary"-->
-<!--        app:cb_pressedRingWidth="8dip"-->
-<!--        android:layout_gravity="bottom|center_horizontal"/>-->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center_vertical|center_horizontal">
 
+        <TextView
+            android:text="Log In"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textSize="30sp"
+            android:textColor="@color/blue"
+            android:layout_marginBottom="10dp"/>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/lLogin_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Name"
-            app:hintTextColor="@color/colorPrimary"
+            android:layout_marginBottom="-10dp"
+            app:hintTextColor="@color/blue"
+            android:textColorHint="@color/colorPrimaryDark"
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
             app:errorEnabled="true"
+            android:textColor="@color/colorPrimaryDark"
             app:boxStrokeColor="@color/colorPrimary"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -37,8 +40,7 @@
                 android:text=""
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                app:boxStrokeColor="@color/colorPrimary"/>
+                android:gravity="center_horizontal" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -47,10 +49,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
-            app:hintTextColor="@color/colorPrimary"
+            app:hintTextColor="@color/blue"
+            android:textColorHint="@color/colorPrimaryDark"
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
             app:errorEnabled="true"
+            android:textColor="@color/colorPrimaryDark"
             app:boxStrokeColor="@color/colorPrimary"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -58,8 +62,7 @@
                 android:text=""
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                app:boxStrokeColor="@color/colorPrimary"/>
+                android:gravity="center_horizontal" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,6 +71,10 @@
             android:text="Login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:backgroundTint="@color/colorPrimaryDark"
+            app:strokeColor="@color/m3Red"
+            app:strokeWidth="2dp"
+            android:textColor="@color/m3Red"
             android:theme="@style/Theme.MaterialComponents.Light"
             android:layout_gravity="center_vertical|center_horizontal"
             />

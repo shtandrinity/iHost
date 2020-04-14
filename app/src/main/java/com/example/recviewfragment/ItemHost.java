@@ -1,6 +1,8 @@
 package com.example.recviewfragment;
 
-public class ItemHost {
+import java.io.Serializable;
+
+public class ItemHost implements Serializable {
 
     private int id;
     private String login;
