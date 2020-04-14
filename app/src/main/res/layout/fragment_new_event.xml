@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/newEventContainer"
+    android:id="@+id/loginContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".FragmentLogin">
 
+<!--    <at.markushi.ui.CircleButton-->
+<!--        android:id="@+id/btnBack"-->
+<!--        android:layout_width="64dip"-->
+<!--        android:layout_height="64dip"-->
+<!--        android:src="@drawable/arrow_up"-->
+<!--        app:cb_color="@color/colorPrimary"-->
+<!--        app:cb_pressedRingWidth="8dip"-->
+<!--        android:layout_gravity="top|center_horizontal"/>-->
+
     <LinearLayout
-        android:id="@+id/linearNEMain"
+        android:id="@+id/linearMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center_horizontal"
-        tools:ignore="UselessParent">
+        android:layout_gravity="center_vertical|center_horizontal">
 
         <LinearLayout
-            android:id="@+id/linearNewEvent"
+            android:id="@+id/linearEvent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -40,7 +48,7 @@
                 android:layout_height="wrap_content"/>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/lNewEvent_name"
+                android:id="@+id/lName"
                 android:hint="Name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -65,14 +73,14 @@
         <LinearLayout
             android:id="@+id/linearUser"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="#eee8f7"
             android:layout_marginTop="15dp"
             android:layout_weight="0.8">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/lNewEvent_login"
+                android:id="@+id/lLogin"
                 android:hint="Login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -92,7 +100,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/lNewEvent_password"
+                android:id="@+id/lPassword"
                 android:hint="Password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -112,7 +120,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/lNewEvent_confirmPassword"
+                android:id="@+id/lConfirmPassword"
                 android:hint="Confirm password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -132,7 +140,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/lNewEvent_email"
+                android:id="@+id/lEmail"
                 android:hint="Email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -151,8 +159,15 @@
                     app:boxStrokeColor="@color/colorPrimary"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+<!--        <fragment-->
+<!--            android:id="@+id/map"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="300dp"-->
+<!--            android:name="com.google.android.gms.maps.SupportMapFragment"-->
+<!--            />-->
+
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnNewEvent_NewEvent"
+                android:id="@+id/btnNewEvent"
                 android:text="New Event"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

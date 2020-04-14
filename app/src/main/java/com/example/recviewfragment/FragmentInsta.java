@@ -16,7 +16,8 @@ public class FragmentInsta extends Fragment {
     public FragmentInsta() {}
 
     public FragmentInsta newInstance (){
-        return new FragmentInsta();
+        FragmentInsta fragmentInsta = new FragmentInsta();
+        return fragmentInsta;
     }
 
     @Nullable

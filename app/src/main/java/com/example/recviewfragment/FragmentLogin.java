@@ -1,18 +1,16 @@
 package com.example.recviewfragment;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -31,7 +29,8 @@ public class FragmentLogin extends Fragment {
     private String password;
     private TextInputLayout etLogin;
     private TextInputLayout etPassword;
-    private ItemHost itemHost;
+    private JsonPlaceHolder jsonPlaceHolder;
+
 
     public FragmentLogin() {}
 
@@ -43,15 +42,36 @@ public class FragmentLogin extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
+        MaterialButton btnLogin_login = v.findViewById(R.id.btnLogin_login);
         etLogin = v.findViewById(R.id.lLogin_login);
         etPassword = v.findViewById(R.id.lLogin_Password);
-        MaterialButton btnLogin_login = v.findViewById(R.id.btnLogin_login);
 
         btnLogin_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(validateInput(v)){
-                    validateHost();
+                    login = etLogin.getEditText().getText().toString().trim();
+                    password = etPassword.getEditText().getText().toString().trim();
+
+                    jsonPlaceHolder = ApiClient.getInterface();
+                    Call<List<ItemHost>> call = jsonPlaceHolder.getHostByLogin(login);
+                    call.enqueue(new Callback<List<ItemHost>>() {
+                        @Override
+                        public void onResponse(Call<List<ItemHost>> call, Response<List<ItemHost>> response) {
+                            if(password.equals(response.body().get(0).getPassword())){
+                                Toast.makeText(getActivity()
+                                        .getApplicationContext(), "Bro, you're logged in", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<ItemHost>> call, Throwable t) {
+                            Log.e("Error code is:", t.getMessage());
+                            etLogin.setError("Wrong login or password");
+                            etPassword.setError("Wrong login or password");
+                        }
+                    });
+
                 }
             }
         });
@@ -68,24 +88,8 @@ public class FragmentLogin extends Fragment {
         return v;
     }
 
-    //Sending user to HostProfile fragment only after Login is succesfull
-    private CallbackInterfaceAddHost callbackInterfaceAddHost = new CallbackInterfaceAddHost() {
-        @Override
-        public void onSuccess() {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("host", itemHost);
-            FragmentHostProfile fragmentHostProfile = new FragmentHostProfile();
-            fragmentHostProfile.setArguments(bundle);
-            FragmentTransaction trans = getChildFragmentManager().beginTransaction();
-            trans.replace(R.id.loginContainer, fragmentHostProfile, "Login-Profile");
-            trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            trans.addToBackStack("login_screen");
-            trans.commit();
-        }
-    };
 
-    //===================================INPUT VALIDATION METHODS===================================
-    private boolean validateLoginInput(){
+    public boolean validateLoginInput(){
         login = etLogin.getEditText().getText().toString().trim();
         if (login.isEmpty()){
             etLogin.setError("Please provide login");
@@ -97,7 +101,7 @@ public class FragmentLogin extends Fragment {
         }
     }
 
-    private boolean validatePasswordInput(){
+    public boolean validatePasswordInput(){
         password = etPassword.getEditText().getText().toString().trim();
         if (password.isEmpty()){
             etPassword.setError("Please provide the password");
@@ -109,46 +113,10 @@ public class FragmentLogin extends Fragment {
         }
     }
 
-    private boolean validateInput(View v){
-        return !(!validateLoginInput() | !validatePasswordInput());
-    }
-
-    private void validateHost() {
-        login = etLogin.getEditText().getText().toString().trim();
-        password = etPassword.getEditText().getText().toString().trim();
-
-        JsonPlaceHolder jsonPlaceHolder = ApiClient.getInterface();
-        Call<List<ItemHost>> call = jsonPlaceHolder.getHostByLogin(login);
-        call.enqueue(new Callback<List<ItemHost>>() {
-            @Override
-            public void onResponse(Call<List<ItemHost>> call, Response<List<ItemHost>> response) {
-                assert response.body() != null;
-                if (!(response.body().size() == 0)){
-                    if(password.equals(response.body().get(0).getPassword())){
-                        //Save host's login to SharedPreferences
-                        SharedPreferences sp = getContext().getSharedPreferences("LoginShared", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor spEditor=sp.edit();
-                        spEditor.putString("LoginShared", response.body().get(0).getLogin());
-                        spEditor.apply();
-
-                        itemHost = response.body().get(0);
-                        callbackInterfaceAddHost.onSuccess();
-                    }
-                    else {
-                        etPassword.setError("Wrong login or password");
-                    }
-                }
-                else {
-                    etPassword.setError("Wrong login or password");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<ItemHost>> call, Throwable t) {
-                Log.e("Error code is:", t.getMessage());
-                etPassword.setError("Wrong login or password");
-            }
-        });
+    public boolean validateInput(View v){
+        if(!validateLoginInput() | !validatePasswordInput()){
+            return false;
+        }
+        else return true;
     }
 }
-

@@ -42,9 +42,9 @@ public class ViewPageAdapter extends FragmentPagerAdapter {
 //                    });
 //                }
 //                return mFragmentAtPos2;
-                return new FragmentHostUnlogged();
+                return new FragmentHostUnlogged().newInstance();
             default:
-                return new FragmentList();
+                return null;
         }
     }
 
@@ -59,5 +59,4 @@ public class ViewPageAdapter extends FragmentPagerAdapter {
             return POSITION_NONE;
         return POSITION_UNCHANGED;
     }
-
 }

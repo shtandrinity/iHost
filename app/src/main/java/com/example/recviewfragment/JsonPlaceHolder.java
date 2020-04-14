@@ -13,14 +13,11 @@ import retrofit2.http.Query;
 
 public interface JsonPlaceHolder {
     @GET("artists")
-    Call<List<ItemArtist>> getItemList();
-
-    @GET("hosts/{id}")
-    Call<ItemHost> getHostByID(@Path("id") int id);
+    Call<List<ItemArtist>> getItemList();                                                           
 
     @GET("hosts")                                                                                   //Search HOSTS by login
     Call<List<ItemHost>> getHostByLogin(@Query("login") String login);
 
     @POST("hosts")
-    Call<ItemHost> createHost(@Body ItemHost itemHost);
+    Call<ItemHost> createArtist(@Body ItemHost itemHost);
 }

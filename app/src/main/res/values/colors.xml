@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#5bbce4</color>
-    <color name="blue">#0d3f8d</color>
-    <color name="m3Red">#e50522</color>
-    <color name="yellow">#e4c85b</color>
+    <color name="colorPrimary">#834fe2</color>
     <color name="colorPrimaryDark">#fbfbfb</color>
     <color name="colorAccent">#52b7f8</color>
     <color name="backgroundFragment">#fbfbfb</color>

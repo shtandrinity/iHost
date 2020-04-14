@@ -1,41 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/hostsUlogged_container"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/hostsContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerHorizontal="true"
     android:background="@color/backgroundFragment">
 
     <LinearLayout
-        android:id="@+id/linear_HostUnloggedContainer"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNewEvent_host"
             android:text="New Event"
-            android:layout_width="match_parent"
-            android:layout_height="90dp"
-            app:backgroundTint="@color/blue"
-            app:strokeColor="@color/yellow"
-            app:strokeWidth="1dp"
-            android:theme="@style/Theme.MaterialComponents.Light"
-            android:layout_marginBottom="-10dp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/Theme.MaterialComponents.Light" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogin_host"
             android:text="Login"
+            android:layout_gravity="center_vertical|center_horizontal"
             android:layout_width="match_parent"
-            android:layout_height="90dp"
-            app:backgroundTint="@color/m3Red"
-            app:strokeColor="@color/yellow"
-            app:strokeWidth="1dp"
-            android:theme="@style/Theme.MaterialComponents.Light"
-            android:layout_marginBottom="-5dp"/>
+            android:layout_height="wrap_content"
+            android:theme="@style/Theme.MaterialComponents.Light" />
     </LinearLayout>
 
 </RelativeLayout>

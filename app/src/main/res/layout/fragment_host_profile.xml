@@ -1,68 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/hostProfileContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:context=".FragmentHostProfile">
 
-    <LinearLayout
-        android:id="@+id/linearProfileMain"
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center_horizontal">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Host Profile"
-            android:gravity="center_horizontal"
-            android:textColor="@color/colorPrimary"
-            android:textSize="25sp"/>
-
-        <fragment
-            android:id="@+id/mapProfile"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:name="com.google.android.gms.maps.SupportMapFragment"/>
-
-        <TextView
-            android:id="@+id/tvProfileEventName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="EventName"
-            android:gravity="center_horizontal" />
-
-        <TextView
-            android:id="@+id/tvProfileLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Login"
-            android:gravity="center_horizontal" />
-
-        <TextView
-            android:id="@+id/tvProfileLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Location"
-            android:gravity="center_horizontal" />
-
-        <TextView
-            android:id="@+id/tvProfileEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Email"
-            android:gravity="center_horizontal" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnProfile_logOut"
-            android:text="Log Out"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:theme="@style/Theme.MaterialComponents.Light"
-            android:layout_gravity="center_horizontal|bottom" />
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:text="@string/hello_blank_fragment" />
 
 </FrameLayout>

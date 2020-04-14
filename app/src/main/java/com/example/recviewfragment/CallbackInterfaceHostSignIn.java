@@ -1,5 +1,5 @@
 package com.example.recviewfragment;
 
-public interface CallbackInterfaceAddHost {
+public interface CallbackInterfaceHostSignIn {
     void onSuccess();
 }
