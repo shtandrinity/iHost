@@ -29,28 +29,8 @@ public class FragmentList extends Fragment{
     public FragmentList(){}
 
     public FragmentList newInstance (){
-        FragmentList fragmentList = new FragmentList();
-        return fragmentList;
+        return new FragmentList();
     }
-
-    private CallbackInterfaceArtistsList callbackInterfaceArtistsList = new CallbackInterfaceArtistsList() {
-        @Override
-        public void onSuccess(List<ItemArtist> list) {
-            for (ItemArtist itemArtist : list) {
-                lstItemArtists.add(new ItemArtist(
-                        itemArtist.getId(),
-                        itemArtist.getName(),
-                        itemArtist.getPhone(),
-                        itemArtist.getIsLocated()));
-            }
-            recyclerAdapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public void onFailure(String errorCode) {
-            Log.e("Error code is:", errorCode);
-        }
-    };
 
     @Nullable
     @Override
@@ -89,5 +69,25 @@ public class FragmentList extends Fragment{
             }
         });
     }
+
+    //Refresh RecyclerView after having GET call done
+    private CallbackInterfaceArtistsList callbackInterfaceArtistsList = new CallbackInterfaceArtistsList() {
+        @Override
+        public void onSuccess(List<ItemArtist> list) {
+            for (ItemArtist itemArtist : list) {
+                lstItemArtists.add(new ItemArtist(
+                        itemArtist.getId(),
+                        itemArtist.getName(),
+                        itemArtist.getPhone(),
+                        itemArtist.getIsLocated()));
+            }
+            recyclerAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onFailure(String errorCode) {
+            Log.e("Error code is:", errorCode);
+        }
+    };
 }
 

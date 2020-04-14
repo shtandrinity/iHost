@@ -1,5 +1,5 @@
 package com.example.recviewfragment;
 
-public interface CallbackInterfaceLoginExists {
+public interface CallbackInterfaceCheckHostByLogin {
     public boolean onSuccess();
 }

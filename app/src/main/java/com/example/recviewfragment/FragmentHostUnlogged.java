@@ -1,9 +1,11 @@
 package com.example.recviewfragment;
 
 import android.os.Bundle;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,7 +18,6 @@ public class FragmentHostUnlogged extends Fragment {
 
 
     private View v;
-
     private final String FRAGMENT_TAG = "host_screen";
 
     public FragmentHostUnlogged(){}
@@ -39,9 +40,9 @@ public class FragmentHostUnlogged extends Fragment {
         btnLogin_host.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction trans = getFragmentManager().beginTransaction();
-//                trans.setCustomAnimations(R.anim.bottom_to_top, R.anim.top_to_bottom, R.anim.bottom_to_top, R.anim.top_to_bottom);
-                trans.replace(R.id.hostsContainer, new FragmentLogin().newInstance(), "Login");
+                //deactivateAllButtons();
+                FragmentTransaction trans = getChildFragmentManager().beginTransaction();
+                trans.replace(R.id.hostsUlogged_container, new FragmentLogin().newInstance(), "Login");
                 trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 trans.addToBackStack(FRAGMENT_TAG);
                 trans.commit();
@@ -51,17 +52,27 @@ public class FragmentHostUnlogged extends Fragment {
         btnNewEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction trans = getFragmentManager().beginTransaction();
-//                trans.setCustomAnimations(R.anim.top_to_bottom, R.anim.bottom_to_top, R.anim.top_to_bottom, R.anim.bottom_to_top);
-                trans.replace(R.id.hostsContainer, new FragmentNewEvent().newInstance(), "NewEvent");
+                //deactivateAllButtons();
+                FragmentTransaction trans = getChildFragmentManager().beginTransaction();
+                trans.replace(R.id.hostsUlogged_container, new FragmentNewHost().newInstance(), "NewEvent");
                 trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 trans.addToBackStack(FRAGMENT_TAG);
                 trans.commit();
+
             }
         });
 
         return v;
     }
 
+    private void deactivateAllButtons() {
+        LinearLayout rl = v.findViewById(R.id.linear_HostUnloggedContainer);
+        final int childCount = rl.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            if(rl.getChildAt(i) instanceof MaterialButton){
+                rl.getChildAt(i).setClickable(false);
+            }
+        }
+    }
 }
 
