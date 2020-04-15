@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/hostProfileContainer"
     android:layout_width="match_parent"
@@ -8,7 +8,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
-        android:id="@+id/linearProfileMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -20,7 +19,7 @@
             android:text="Host Profile"
             android:gravity="center_horizontal"
             android:textColor="@color/colorPrimary"
-            android:textSize="25sp"/>
+            android:textSize="20sp"/>
 
         <fragment
             android:id="@+id/mapProfile"
@@ -30,39 +29,64 @@
 
         <TextView
             android:id="@+id/tvProfileEventName"
+            android:background="@drawable/rect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="EventName"
-            android:gravity="center_horizontal" />
-
-        <TextView
-            android:id="@+id/tvProfileLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Login"
+            android:textColor="@color/blue"
+            android:textSize="20sp"
             android:gravity="center_horizontal" />
 
         <TextView
             android:id="@+id/tvProfileLocation"
+            android:background="@drawable/rect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Location"
+            android:textColor="@color/blue"
+            android:textSize="20sp"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/tvProfileLogin"
+            android:background="@drawable/rect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:textColor="@color/blue"
+            android:textSize="20sp"
             android:gravity="center_horizontal" />
 
         <TextView
             android:id="@+id/tvProfileEmail"
+            android:background="@drawable/rect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Email"
+            android:textColor="@color/blue"
+            android:textSize="20sp"
             android:gravity="center_horizontal" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnProfile_logOut"
             android:text="Log Out"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:backgroundTint="@color/colorPrimaryDark"
+            app:strokeColor="@color/blue"
+            app:strokeWidth="2dp"
+            android:textColor="@color/blue"
             android:theme="@style/Theme.MaterialComponents.Light"
             android:layout_gravity="center_horizontal|bottom" />
     </LinearLayout>
 
-</FrameLayout>
+</RelativeLayout>

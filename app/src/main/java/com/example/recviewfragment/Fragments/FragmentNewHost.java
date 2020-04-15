@@ -1,10 +1,13 @@
-package com.example.recviewfragment;
+package com.example.recviewfragment.Fragments;
 
+import com.example.recviewfragment.API.ApiClient;
+import com.example.recviewfragment.CallbackInterfaces.CallbackInterfaceRetrofit;
+import com.example.recviewfragment.Model.ItemHost;
+import com.example.recviewfragment.API.JsonPlaceHolder;
+import com.example.recviewfragment.PreferenceUtils;
+import com.example.recviewfragment.R;
 import com.google.android.gms.common.api.Status;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -44,24 +47,15 @@ public class FragmentNewHost extends Fragment{
 
     private View v;
 
-    private String email;
-    private String eventName;
-    private String login;
-    private String password;
+    private String email, eventName, login, password;
     private LatLng location;
-
-    private TextInputLayout etEventName;
-    private TextInputLayout etLogin;
-    private TextInputLayout etPassword;
-    private TextInputLayout etConfirmPassword;
-    private TextInputLayout etEmail;
+    private TextInputLayout etEventName, etLogin, etPassword, etConfirmPassword, etEmail;
 
     private boolean isLoginExists;
     private JsonPlaceHolder jsonPlaceHolder;
     private boolean locationIsSelected = false;
     private AutocompleteSupportFragment autocompleteFragment;
-    private SharedPreferences sp;
-    private SharedPreferences.Editor spEditor;
+    private final String FRAGMENT_TAG = "newHost_screen";
 
     public FragmentNewHost() {}
 
@@ -140,19 +134,18 @@ public class FragmentNewHost extends Fragment{
             @Override
             public void onResponse(Call<ItemHost> call, Response<ItemHost> response) {
                 if(response.isSuccessful()){
-//                    sp = getContext().getSharedPreferences("Login", Context.MODE_PRIVATE);
-//                    spEditor = sp.edit();
-//                    spEditor.putString("Login", login);
-//                    spEditor.apply();
 
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("host", itemHost);
-                    FragmentHostProfile fragmentHostProfile = FragmentHostProfile.newInstance();
-                    fragmentHostProfile.setArguments(bundle);
+                    //Setting a sharedPreferences
+                    PreferenceUtils preferenceUtils = new PreferenceUtils(getContext());
+                    String itemHostBody = preferenceUtils.serializeToJson(response.body());
+                    preferenceUtils.setBoolean("isLogged", true);
+                    preferenceUtils.setString("itemHost", itemHostBody);
+                    preferenceUtils.setInteger("itemHostID", response.body().getId());
+
                     FragmentTransaction trans = getChildFragmentManager().beginTransaction();
-                    trans.replace(R.id.newEventContainer, fragmentHostProfile, "NewHost-Profile");
+                    trans.replace(R.id.newEventContainer, FragmentHostProfile.newInstance(), "NewHost-Profile");
                     trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    trans.addToBackStack("newHostScreen");
+                    trans.addToBackStack(FRAGMENT_TAG);
                     trans.commit();
                 }
                 else {

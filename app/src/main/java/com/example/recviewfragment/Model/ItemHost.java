@@ -1,4 +1,4 @@
-package com.example.recviewfragment;
+package com.example.recviewfragment.Model;
 
 import java.io.Serializable;
 

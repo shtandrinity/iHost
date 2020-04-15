@@ -1,4 +1,4 @@
-package com.example.recviewfragment;
+package com.example.recviewfragment.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.recviewfragment.Model.ItemArtist;
+import com.example.recviewfragment.R;
+
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
@@ -16,7 +19,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Context context;
     private List<ItemArtist> mData;
 
-    RecyclerViewAdapter(Context context, List<ItemArtist> mData) {
+    public RecyclerViewAdapter(Context context, List<ItemArtist> mData) {
         this.context = context;
         this.mData = mData;
     }

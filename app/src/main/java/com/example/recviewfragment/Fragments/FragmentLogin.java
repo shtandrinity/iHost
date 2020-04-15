@@ -1,7 +1,5 @@
-package com.example.recviewfragment;
+package com.example.recviewfragment.Fragments;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.recviewfragment.API.ApiClient;
+import com.example.recviewfragment.CallbackInterfaces.CallbackInterfaceAddHost;
+import com.example.recviewfragment.Model.ItemHost;
+import com.example.recviewfragment.API.JsonPlaceHolder;
+import com.example.recviewfragment.PreferenceUtils;
+import com.example.recviewfragment.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -31,7 +35,7 @@ public class FragmentLogin extends Fragment {
     private String password;
     private TextInputLayout etLogin;
     private TextInputLayout etPassword;
-    private ItemHost itemHost;
+    private final String FRAGMENT_TAG = "login_screen";
 
     public FragmentLogin() {}
 
@@ -56,15 +60,6 @@ public class FragmentLogin extends Fragment {
             }
         });
 
-//        btnBack.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                FragmentTransaction trans = getFragmentManager().beginTransaction();
-//                trans.replace(R.id.loginContainer, new FragmentHost().newInstance()).addToBackStack("host_screen");
-//                trans.commit();
-//            }
-//        });
-
         return v;
     }
 
@@ -72,14 +67,10 @@ public class FragmentLogin extends Fragment {
     private CallbackInterfaceAddHost callbackInterfaceAddHost = new CallbackInterfaceAddHost() {
         @Override
         public void onSuccess() {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("host", itemHost);
-            FragmentHostProfile fragmentHostProfile = new FragmentHostProfile();
-            fragmentHostProfile.setArguments(bundle);
             FragmentTransaction trans = getChildFragmentManager().beginTransaction();
-            trans.replace(R.id.loginContainer, fragmentHostProfile, "Login-Profile");
+            trans.replace(R.id.loginContainer, FragmentHostProfile.newInstance(), "Login-Profile");
             trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            trans.addToBackStack("login_screen");
+            trans.addToBackStack(FRAGMENT_TAG);
             trans.commit();
         }
     };
@@ -125,13 +116,13 @@ public class FragmentLogin extends Fragment {
                 assert response.body() != null;
                 if (!(response.body().size() == 0)){
                     if(password.equals(response.body().get(0).getPassword())){
-                        //Save host's login to SharedPreferences
-                        SharedPreferences sp = getContext().getSharedPreferences("LoginShared", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor spEditor=sp.edit();
-                        spEditor.putString("LoginShared", response.body().get(0).getLogin());
-                        spEditor.apply();
 
-                        itemHost = response.body().get(0);
+                        PreferenceUtils preferenceUtils = new PreferenceUtils(getContext());
+                        String itemHostBody = preferenceUtils.serializeToJson(response.body().get(0));
+                        preferenceUtils.setBoolean("isLogged", true);
+                        preferenceUtils.setString("itemHost", itemHostBody);
+                        preferenceUtils.setInteger("itemHostID", response.body().get(0).getId());
+
                         callbackInterfaceAddHost.onSuccess();
                     }
                     else {

@@ -1,4 +1,6 @@
-package com.example.recviewfragment;
+package com.example.recviewfragment.CallbackInterfaces;
+
+import com.example.recviewfragment.Model.ItemArtist;
 
 import java.util.List;
 

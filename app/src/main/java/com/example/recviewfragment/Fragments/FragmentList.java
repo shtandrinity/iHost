@@ -1,4 +1,4 @@
-package com.example.recviewfragment;
+package com.example.recviewfragment.Fragments;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +11,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.recviewfragment.API.ApiClient;
+import com.example.recviewfragment.CallbackInterfaces.CallbackInterfaceArtistsList;
+import com.example.recviewfragment.Model.ItemArtist;
+import com.example.recviewfragment.API.JsonPlaceHolder;
+import com.example.recviewfragment.PreferenceUtils;
+import com.example.recviewfragment.R;
+import com.example.recviewfragment.Adapters.RecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +49,9 @@ public class FragmentList extends Fragment{
         myRecyclerView.setLayoutManager(new LinearLayoutManager((getActivity())));
         myRecyclerView.setAdapter(recyclerAdapter);
         recyclerAdapter.notifyDataSetChanged();
+        //===============================================================
+        //new PreferenceUtils(getContext()).clearSavedInSharedPreference();
+        //===============================================================
         return v;
     }
 

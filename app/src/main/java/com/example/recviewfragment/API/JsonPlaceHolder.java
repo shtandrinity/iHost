@@ -1,4 +1,7 @@
-package com.example.recviewfragment;
+package com.example.recviewfragment.API;
+
+import com.example.recviewfragment.Model.ItemArtist;
+import com.example.recviewfragment.Model.ItemHost;
 
 import java.util.List;
 

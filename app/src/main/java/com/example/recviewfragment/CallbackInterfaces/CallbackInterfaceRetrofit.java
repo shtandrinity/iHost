@@ -1,4 +1,4 @@
-package com.example.recviewfragment;
+package com.example.recviewfragment.CallbackInterfaces;
 
 public interface CallbackInterfaceRetrofit {
     void onSuccess(boolean loginExists);

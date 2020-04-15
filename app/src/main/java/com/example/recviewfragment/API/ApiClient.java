@@ -1,10 +1,10 @@
-package com.example.recviewfragment;
+package com.example.recviewfragment.API;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-class ApiClient {
-    private static String baseURL = "https://3b6e8032.ngrok.io/";
+public class ApiClient {
+    private static String baseURL = "https://51d9caee.ngrok.io/";
     private static Retrofit retrofit = null;
     private static JsonPlaceHolder instance = null;
 
@@ -18,7 +18,7 @@ class ApiClient {
         return retrofit;
     }
 
-    static JsonPlaceHolder getInterface(){
+    public static JsonPlaceHolder getInterface(){
         if (instance == null) {
             instance = getApiClient().create(JsonPlaceHolder.class);
         }

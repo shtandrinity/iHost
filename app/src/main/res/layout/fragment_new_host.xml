@@ -4,9 +4,10 @@
     android:id="@+id/newEventContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:background="@color/colorPrimaryDark"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".FragmentLogin">
+    tools:context=".Fragments.FragmentLogin">
 
     <LinearLayout
         android:id="@+id/linearNEMain"
@@ -16,22 +17,21 @@
         android:layout_gravity="center_horizontal"
         tools:ignore="UselessParent">
 
-        <LinearLayout
-            android:id="@+id/linearNewEvent"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Event Details"
+            android:gravity="center_horizontal"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"/>
+
+        <LinearLayout
+            android:id="@+id/linearUser"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:orientation="vertical"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:background="#eee8f7">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Event Details"
-                android:gravity="center_horizontal"
-                android:textColor="@color/colorPrimary"
-                android:textSize="25dp"/>
-
+            android:layout_marginTop="15dp"
+            android:layout_weight="0.8">
 
             <fragment
                 android:id="@+id/autocomplete"
@@ -59,17 +59,6 @@
                     app:boxStrokeColor="@color/colorPrimary"/>
 
             </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearUser"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:background="#eee8f7"
-            android:layout_marginTop="15dp"
-            android:layout_weight="0.8">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/lNewEvent_login"
@@ -156,6 +145,10 @@
                 android:text="New Event"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:backgroundTint="@color/colorPrimaryDark"
+                app:strokeColor="@color/m3Red"
+                app:strokeWidth="2dp"
+                android:textColor="@color/m3Red"
                 android:theme="@style/Theme.MaterialComponents.Light"
                 android:layout_gravity="center_horizontal|bottom" />
         </LinearLayout>
