@@ -13,12 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.recviewfragment.API.ApiClient;
-import com.example.recviewfragment.CallbackInterfaces.CallbackInterfaceArtistsList;
+import com.example.recviewfragment.Interfaces.CallbackInterfaceArtistsList;
 import com.example.recviewfragment.Model.ItemArtist;
 import com.example.recviewfragment.API.JsonPlaceHolder;
-import com.example.recviewfragment.PreferenceUtils;
 import com.example.recviewfragment.R;
-import com.example.recviewfragment.Adapters.RecyclerViewAdapter;
+import com.example.recviewfragment.Adapters.RVAdapter_listLogged;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,25 +26,25 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FragmentList extends Fragment{
+public class FragmentListLogged extends Fragment{
 
     View v;
     private JsonPlaceHolder jsonPlaceHolder;
     private List<ItemArtist> lstItemArtists = new ArrayList<>();
-    private RecyclerViewAdapter recyclerAdapter;
+    private RVAdapter_listLogged recyclerAdapter;
 
-    public FragmentList(){}
+    public FragmentListLogged(){}
 
-    public FragmentList newInstance (){
-        return new FragmentList();
+    public FragmentListLogged newInstance (){
+        return new FragmentListLogged();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.fragment_list, container, false);
+        v = inflater.inflate(R.layout.fragment_list_logged, container, false);
         RecyclerView myRecyclerView = (RecyclerView) v.findViewById(R.id.list_recyclerView);
-        recyclerAdapter = new RecyclerViewAdapter(getContext(), lstItemArtists);
+        recyclerAdapter = new RVAdapter_listLogged(getContext(), lstItemArtists);
         myRecyclerView.setLayoutManager(new LinearLayoutManager((getActivity())));
         myRecyclerView.setAdapter(recyclerAdapter);
         recyclerAdapter.notifyDataSetChanged();
@@ -81,8 +80,8 @@ public class FragmentList extends Fragment{
         });
     }
 
-    //Refresh RecyclerView after having GET call done
     private CallbackInterfaceArtistsList callbackInterfaceArtistsList = new CallbackInterfaceArtistsList() {
+        //Refresh RecyclerView after having GET call done
         @Override
         public void onSuccess(List<ItemArtist> list) {
             for (ItemArtist itemArtist : list) {

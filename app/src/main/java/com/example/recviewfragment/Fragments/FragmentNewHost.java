@@ -1,7 +1,7 @@
 package com.example.recviewfragment.Fragments;
 
 import com.example.recviewfragment.API.ApiClient;
-import com.example.recviewfragment.CallbackInterfaces.CallbackInterfaceRetrofit;
+import com.example.recviewfragment.Interfaces.CallbackInterfaceRetrofit;
 import com.example.recviewfragment.Model.ItemHost;
 import com.example.recviewfragment.API.JsonPlaceHolder;
 import com.example.recviewfragment.PreferenceUtils;
@@ -109,8 +109,9 @@ public class FragmentNewHost extends Fragment{
         });
     }
 
-    @Override  //Removing Google AutocompleteSupportFragment when not needed
+    @Override
     public void onDestroyView() {
+        //Removing Google AutocompleteSupportFragment when not needed
         if (autocompleteFragment != null) {
             FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
             fragmentTransaction.remove(autocompleteFragment).commitNowAllowingStateLoss();
@@ -282,8 +283,8 @@ public class FragmentNewHost extends Fragment{
         }
     }
 
-    //Making sure all the fields are being properly entered
     private boolean validateInput(View v){
+        //Making sure all the fields are being properly entered
         return !(!validateLocationInput() | !validateEventNameInput() | !validateLoginInput() | !validatePasswordInput() | !validateConfirmPasswordInput() | !validateEmailInput());
     }
 
@@ -315,8 +316,8 @@ public class FragmentNewHost extends Fragment{
         });
     }
 
-    //validate input & create new host
     private CallbackInterfaceRetrofit callbackInterfaceRetrofit = new CallbackInterfaceRetrofit() {
+        //validate input & create new host
         @Override
         public void onSuccess(boolean loginExists) {
             if(validateInput(v)){

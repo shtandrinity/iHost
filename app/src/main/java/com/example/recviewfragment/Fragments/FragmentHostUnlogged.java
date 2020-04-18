@@ -19,7 +19,6 @@ public class FragmentHostUnlogged extends Fragment {
 
     private View v;
     private final String FRAGMENT_TAG = "hostUnlogged_screen";
-    private boolean isUserLogged;
 
     public FragmentHostUnlogged(){}
 
@@ -38,36 +37,27 @@ public class FragmentHostUnlogged extends Fragment {
         MaterialButton btnNewEvent = (MaterialButton) v.findViewById(R.id.btnNewEvent_host);
         MaterialButton btnLogin_host = (MaterialButton) v.findViewById(R.id.btnLogin_host);
 
-        if(new PreferenceUtils(getContext()).getBoolean("isLogged")){
-            FragmentTransaction trans = getChildFragmentManager().beginTransaction();
-            trans.replace(R.id.hostsUlogged_container, new FragmentHostProfile(), "HostUnlogged-Profile");
-            trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            trans.addToBackStack(FRAGMENT_TAG);
-            trans.commit();
-        }
-        else{
-            btnLogin_host.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FragmentTransaction trans = getChildFragmentManager().beginTransaction();
-                    trans.replace(R.id.hostsUlogged_container, new FragmentLogin().newInstance(), "Login");
-                    trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    trans.addToBackStack(FRAGMENT_TAG);
-                    trans.commit();
-                }
-            });
+        btnLogin_host.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction trans = getChildFragmentManager().beginTransaction();
+                trans.replace(R.id.hostsUlogged_container, new FragmentLogin().newInstance(), "Login");
+                trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                trans.addToBackStack(FRAGMENT_TAG);
+                trans.commit();
+            }
+        });
 
-            btnNewEvent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FragmentTransaction trans = getChildFragmentManager().beginTransaction();
-                    trans.replace(R.id.hostsUlogged_container, new FragmentNewHost().newInstance(), "NewEvent");
-                    trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    trans.addToBackStack(FRAGMENT_TAG);
-                    trans.commit();
-                }
-            });
-        }
+        btnNewEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction trans = getChildFragmentManager().beginTransaction();
+                trans.replace(R.id.hostsUlogged_container, new FragmentNewHost().newInstance(), "NewEvent");
+                trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                trans.addToBackStack(FRAGMENT_TAG);
+                trans.commit();
+            }
+        });
 
         return v;
     }

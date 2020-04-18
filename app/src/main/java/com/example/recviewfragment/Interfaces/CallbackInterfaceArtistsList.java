@@ -1,4 +1,4 @@
-package com.example.recviewfragment.CallbackInterfaces;
+package com.example.recviewfragment.Interfaces;
 
 import com.example.recviewfragment.Model.ItemArtist;
 

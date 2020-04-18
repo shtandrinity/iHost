@@ -1,5 +1,6 @@
 package com.example.recviewfragment.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,17 +10,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.recviewfragment.Model.ItemArtist;
+import com.example.recviewfragment.Model.ItemHost;
 import com.example.recviewfragment.R;
 
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
-
+public class RVAdapter_listUnlogged extends RecyclerView.Adapter<RVAdapter_listUnlogged.MyViewHolder>{
     private Context context;
-    private List<ItemArtist> mData;
+    private List<ItemHost> mData;
 
-    public RecyclerViewAdapter(Context context, List<ItemArtist> mData) {
+    public RVAdapter_listUnlogged(Context context, List<ItemHost> mData) {
         this.context = context;
         this.mData = mData;
     }
@@ -31,11 +31,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView tvArtistName;
+        private TextView tvEventName;
+        private TextView tvEventId;
 
         MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvArtistName = (TextView) itemView.findViewById(R.id.itemArtist);
+            tvEventName = (TextView) itemView.findViewById(R.id.item_eventName_unlogged);
+            tvEventId = (TextView) itemView.findViewById(R.id.item_eventID_unlogged);
         }
     }
 
@@ -43,13 +45,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v;
-        v = LayoutInflater.from(context).inflate(R.layout.item_artist, parent, false);
-        return new MyViewHolder(v);
+        v = LayoutInflater.from(context).inflate(R.layout.item_event_unlogged, parent, false);
+        return new RVAdapter_listUnlogged.MyViewHolder(v);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.tvArtistName.setText(String.valueOf(mData.get(position).getId()) + " " +
-                mData.get(position).getName());
+        holder.tvEventName.setText(String.valueOf(mData.get(position).getEventName()));
+        holder.tvEventId.setText(String.valueOf(position+1));
     }
 }

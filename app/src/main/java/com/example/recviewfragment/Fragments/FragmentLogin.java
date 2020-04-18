@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.recviewfragment.API.ApiClient;
-import com.example.recviewfragment.CallbackInterfaces.CallbackInterfaceAddHost;
+import com.example.recviewfragment.Interfaces.CallbackInterfaceAddHost;
 import com.example.recviewfragment.Model.ItemHost;
 import com.example.recviewfragment.API.JsonPlaceHolder;
 import com.example.recviewfragment.PreferenceUtils;
@@ -63,8 +63,8 @@ public class FragmentLogin extends Fragment {
         return v;
     }
 
-    //Sending user to HostProfile fragment only after Login is succesfull
-    private CallbackInterfaceAddHost callbackInterfaceAddHost = new CallbackInterfaceAddHost() {
+    private CallbackInterfaceAddHost CallbackInterfaceAddHost = new CallbackInterfaceAddHost() {
+        //Sending user to HostProfile fragment only after Login is succesfull
         @Override
         public void onSuccess() {
             FragmentTransaction trans = getChildFragmentManager().beginTransaction();
@@ -123,7 +123,7 @@ public class FragmentLogin extends Fragment {
                         preferenceUtils.setString("itemHost", itemHostBody);
                         preferenceUtils.setInteger("itemHostID", response.body().get(0).getId());
 
-                        callbackInterfaceAddHost.onSuccess();
+                        CallbackInterfaceAddHost.onSuccess();
                     }
                     else {
                         etPassword.setError("Wrong login or password");

@@ -1,4 +1,4 @@
-package com.example.recviewfragment.CallbackInterfaces;
+package com.example.recviewfragment.Interfaces;
 
 public interface CallbackInterfaceCheckHostByLogin {
     public boolean onSuccess();

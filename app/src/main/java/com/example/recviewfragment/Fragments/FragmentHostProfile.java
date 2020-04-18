@@ -40,6 +40,7 @@ public class FragmentHostProfile extends Fragment implements OnMapReadyCallback 
     private GoogleMap map;
     private PreferenceUtils preferenceUtils;
 
+
     public FragmentHostProfile(){}
 
     static FragmentHostProfile newInstance() {
@@ -69,22 +70,16 @@ public class FragmentHostProfile extends Fragment implements OnMapReadyCallback 
             @Override
             public void onClick(View v) {
                 preferenceUtils.clearSavedInSharedPreference();
-//                FragmentManager fm = getActivity().getSupportFragmentManager();
-//                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
-//                    fm.popBackStack();
-//                }
                 FragmentManager fm = getActivity().getSupportFragmentManager();
-                //fm.getFragments().get(1).getChildFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 for (Fragment frag : fm.getFragments()) {
                         FragmentManager childFm = frag.getChildFragmentManager();
                         if (childFm.getBackStackEntryCount() > 0) {
                             childFm.popBackStack();
                         }
-                    childFm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        else childFm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
             }
         });
-
         return v;
     }
 
@@ -95,7 +90,7 @@ public class FragmentHostProfile extends Fragment implements OnMapReadyCallback 
         map.moveCamera(CameraUpdateFactory.newLatLng(location));
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(location)
-                .zoom(14).build();
+                .zoom(16).build();
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
