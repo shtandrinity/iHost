@@ -142,7 +142,7 @@ public class FragmentNewHost extends Fragment{
                     preferenceUtils.setBoolean("isLogged", true);
                     preferenceUtils.setString("itemHost", itemHostBody);
                     preferenceUtils.setInteger("itemHostID", response.body().getId());
-                    preferenceUtils.setString("eventNameToLogged", eventName);
+                    preferenceUtils.setString("eventName_to_ListOfArtists", eventName);
 
                     FragmentTransaction trans = getChildFragmentManager().beginTransaction();
                     trans.replace(R.id.newEventContainer, FragmentHostProfile.newInstance(), "NewHost-Profile");

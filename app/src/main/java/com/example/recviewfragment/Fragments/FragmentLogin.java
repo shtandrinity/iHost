@@ -128,7 +128,7 @@ public class FragmentLogin extends Fragment {
                         preferenceUtils.setBoolean("isLogged", true);
                         preferenceUtils.setString("itemHost", itemHostBody);
                         preferenceUtils.setInteger("itemHostID", response.body().get(0).getId());
-                        preferenceUtils.setString("eventNameToLogged", response.body().get(0).getEventName());
+                        preferenceUtils.setString("eventName_to_ListOfArtists", response.body().get(0).getEventName());
                         CallbackInterfaceAddHost.onSuccess();
                     }
                     else {

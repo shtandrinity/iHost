@@ -23,11 +23,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.recviewfragment.API.ApiClient;
 import com.example.recviewfragment.API.JsonPlaceHolder;
-import com.example.recviewfragment.Adapters.RVAdapter_listUnlogged;
+import com.example.recviewfragment.Adapters.RvAdapter_listEvents;
 import com.example.recviewfragment.Interfaces.CallbackInterfaceMap;
 import com.example.recviewfragment.Interfaces.OnItemClickListener;
 import com.example.recviewfragment.Model.ItemHost;
@@ -56,13 +55,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FragmentListUnlogged extends Fragment implements OnMapReadyCallback {
+public class FragmentListEvents extends Fragment implements OnMapReadyCallback {
 
     private View v;
     private List<ItemHost> lstItemEvents = new ArrayList<>();
-    private RVAdapter_listUnlogged recyclerAdapter;
+    private RvAdapter_listEvents recyclerAdapter;
 
-    private final String FRAGMENT_TAG = "listUnlogged_screen";
+    private final String FRAGMENT_TAG = "listEvents_screen";
     private JsonPlaceHolder jsonPlaceHolder;
 
     private PreferenceUtils preferenceUtils;
@@ -72,25 +71,25 @@ public class FragmentListUnlogged extends Fragment implements OnMapReadyCallback
     private List<Address> eventCityAddress = null;
 
 
-    public FragmentListUnlogged() {}
+    public FragmentListEvents() {}
 
-    public static FragmentListUnlogged newInstance() { return new FragmentListUnlogged(); }
+    public static FragmentListEvents newInstance() { return new FragmentListEvents(); }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v =  inflater.inflate(R.layout.fragment_list_unlogged, container, false);
+        View v = inflater.inflate(R.layout.fragment_list_events, container, false);
 
         preferenceUtils = new PreferenceUtils(getContext());
         if(preferenceUtils.getBoolean("isLogged")){
             FragmentTransaction trans = getChildFragmentManager().beginTransaction();
-            trans.replace(R.id.listUnlogged_container, new FragmentListLogged(), "HostUnlogged-HostProfile");
+            trans.replace(R.id.listEvents_container, new FragmentListArtists_logged(), "HostUnlogged-HostProfile");
             trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             trans.addToBackStack(FRAGMENT_TAG);
             trans.commit();
         }
 
-        RecyclerView myRecyclerView = (RecyclerView) v.findViewById(R.id.listUnlogged_recyclerView);
-        recyclerAdapter = new RVAdapter_listUnlogged(getContext(), lstItemEvents);
+        RecyclerView myRecyclerView = (RecyclerView) v.findViewById(R.id.listEvents_recyclerView);
+        recyclerAdapter = new RvAdapter_listEvents(getContext(), lstItemEvents);
         myRecyclerView.setLayoutManager(new LinearLayoutManager((getActivity())));
         myRecyclerView.setAdapter(recyclerAdapter);
         recyclerAdapter.notifyDataSetChanged();
@@ -105,7 +104,7 @@ public class FragmentListUnlogged extends Fragment implements OnMapReadyCallback
                         preferenceUtils.setString("eventNameToLogged", lstItemEvents.get(position).getEventName());
 
                         FragmentTransaction trans = getChildFragmentManager().beginTransaction();
-                        trans.replace(R.id.listUnlogged_container, new FragmentListLogged(), "HostUnlogged-HostProfile");
+                        trans.replace(R.id.listEvents_container, new FragmentListArtists_unlogged(), "lEvents-lArtists_Unlogged");
                         trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                         trans.addToBackStack(FRAGMENT_TAG);
                         trans.commit();
@@ -117,7 +116,7 @@ public class FragmentListUnlogged extends Fragment implements OnMapReadyCallback
             public void onDeleteClick(int position) {}
         });
 
-        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.listUnlogged_map);
+        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.listEvents_map);
         mapFragment.getMapAsync(this);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
@@ -241,7 +240,7 @@ public class FragmentListUnlogged extends Fragment implements OnMapReadyCallback
     public void onResume() {
         if(preferenceUtils.getBoolean("isLogged")){
             FragmentTransaction trans = getChildFragmentManager().beginTransaction();
-            trans.replace(R.id.listUnlogged_container, new FragmentListLogged(), "ListUnlogged-ListLogged");
+            trans.replace(R.id.listEvents_container, new FragmentListArtists_logged(), "ListUnlogged-ListLogged");
             trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             trans.addToBackStack(FRAGMENT_TAG);
             trans.commit();

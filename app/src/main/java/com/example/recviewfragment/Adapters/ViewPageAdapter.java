@@ -10,8 +10,8 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.example.recviewfragment.Fragments.FragmentHostUnlogged;
 import com.example.recviewfragment.Fragments.FragmentInsta;
-import com.example.recviewfragment.Fragments.FragmentListLogged;
-import com.example.recviewfragment.Fragments.FragmentListUnlogged;
+import com.example.recviewfragment.Fragments.FragmentListArtists_logged;
+import com.example.recviewfragment.Fragments.FragmentListEvents;
 
 import java.util.HashMap;
 
@@ -36,10 +36,10 @@ public class ViewPageAdapter extends FragmentStatePagerAdapter {
 
         switch (position){
             case 0: return new FragmentInsta();
-            case 1: return new FragmentListUnlogged();
+            case 1: return new FragmentListEvents();
             case 2: return new FragmentHostUnlogged();
             default:
-                return new FragmentListLogged();
+                return new FragmentListArtists_logged();
         }
     }
 
