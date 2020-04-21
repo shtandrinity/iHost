@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -59,7 +60,6 @@ public class FragmentHostProfile extends Fragment implements OnMapReadyCallback 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.mapProfile);
         mapFragment.getMapAsync(this);
         preferenceUtils = new PreferenceUtils(getContext());
-
         try {
             getData();
         } catch (IOException e) {
@@ -71,6 +71,12 @@ public class FragmentHostProfile extends Fragment implements OnMapReadyCallback 
             public void onClick(View v) {
                 preferenceUtils.clearSavedInSharedPreference();
                 FragmentManager fm = getActivity().getSupportFragmentManager();
+
+//                FragmentTransaction trans = getChildFragmentManager().beginTransaction();
+//                trans.replace(R.id.hostProfileContainer, new FragmentHostUnlogged(), "Profile-Unlog");
+//                trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+
+
                 for (Fragment frag : fm.getFragments()) {
                         FragmentManager childFm = frag.getChildFragmentManager();
                         if (childFm.getBackStackEntryCount() > 0) {
@@ -78,6 +84,7 @@ public class FragmentHostProfile extends Fragment implements OnMapReadyCallback 
                         }
                         else childFm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
+//                trans.commit();
             }
         });
         return v;

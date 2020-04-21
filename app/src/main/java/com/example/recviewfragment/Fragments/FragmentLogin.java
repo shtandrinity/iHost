@@ -5,7 +5,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -67,11 +69,19 @@ public class FragmentLogin extends Fragment {
         //Sending user to HostProfile fragment only after Login is succesfull
         @Override
         public void onSuccess() {
+            FragmentManager fm = getActivity().getSupportFragmentManager();
             FragmentTransaction trans = getChildFragmentManager().beginTransaction();
+
             trans.replace(R.id.loginContainer, FragmentHostProfile.newInstance(), "Login-Profile");
             trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             trans.addToBackStack(FRAGMENT_TAG);
+
+            fm.popBackStackImmediate("hostUnlogged_screen", 0);
             trans.commit();
+
+//            //Refresh fragments in ViewPager
+//            ViewPager vp=(ViewPager) getActivity().findViewById(R.id.viewPager);
+//            vp.getAdapter().notifyDataSetChanged();
         }
     };
 

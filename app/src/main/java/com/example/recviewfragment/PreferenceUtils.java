@@ -13,7 +13,6 @@ public class PreferenceUtils {
     private final int PRIVATE_MODE = 0;
     // Shared preferences file name
     private static final String PREF_NAME = "PREF_NAME";
-    public static final String IS_LOGIN = "isLogin";
     private final SharedPreferences pref;
     private final SharedPreferences.Editor editor;
 

@@ -6,7 +6,7 @@
     android:background="@color/backgroundFragment">
 
     <TextView
-        android:id="@+id/eventName"
+        android:id="@+id/tvListLogged_eventName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#2b2b2b"
@@ -17,11 +17,11 @@
         android:gravity="center_horizontal" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_recyclerView"
+        android:id="@+id/listLogged_recyclerView"
         android:paddingTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/eventName"
+        android:layout_below="@id/tvListLogged_eventName"
         />
 
 </LinearLayout>

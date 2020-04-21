@@ -15,6 +15,7 @@ import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,12 +23,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.recviewfragment.API.ApiClient;
 import com.example.recviewfragment.API.JsonPlaceHolder;
 import com.example.recviewfragment.Adapters.RVAdapter_listUnlogged;
 import com.example.recviewfragment.Interfaces.CallbackInterfaceMap;
-import com.example.recviewfragment.Interfaces.InterfaceOnItemClickListener_RecyclerView;
+import com.example.recviewfragment.Interfaces.OnItemClickListener;
 import com.example.recviewfragment.Model.ItemHost;
 import com.example.recviewfragment.PreferenceUtils;
 import com.example.recviewfragment.R;
@@ -44,6 +46,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.internal.$Gson$Preconditions;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,15 +62,15 @@ public class FragmentListUnlogged extends Fragment implements OnMapReadyCallback
     private View v;
     private List<ItemHost> lstItemEvents = new ArrayList<>();
     private RVAdapter_listUnlogged recyclerAdapter;
-    private RecyclerView.OnItemTouchListener mListener;
 
-    private PreferenceUtils preferenceUtils;
     private final String FRAGMENT_TAG = "listUnlogged_screen";
     private JsonPlaceHolder jsonPlaceHolder;
 
+    private PreferenceUtils preferenceUtils;
     private Location userLocation;
     private FusedLocationProviderClient fusedLocationClient;
     private GoogleMap map;
+    private List<Address> eventCityAddress = null;
 
 
     public FragmentListUnlogged() {}
@@ -77,10 +80,40 @@ public class FragmentListUnlogged extends Fragment implements OnMapReadyCallback
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v =  inflater.inflate(R.layout.fragment_list_unlogged, container, false);
+
+        preferenceUtils = new PreferenceUtils(getContext());
+        if(preferenceUtils.getBoolean("isLogged")){
+            FragmentTransaction trans = getChildFragmentManager().beginTransaction();
+            trans.replace(R.id.listUnlogged_container, new FragmentListLogged(), "HostUnlogged-HostProfile");
+            trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            trans.addToBackStack(FRAGMENT_TAG);
+            trans.commit();
+        }
+
         RecyclerView myRecyclerView = (RecyclerView) v.findViewById(R.id.listUnlogged_recyclerView);
         recyclerAdapter = new RVAdapter_listUnlogged(getContext(), lstItemEvents);
         myRecyclerView.setLayoutManager(new LinearLayoutManager((getActivity())));
         myRecyclerView.setAdapter(recyclerAdapter);
+
+        recyclerAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                for(int i=0; i<lstItemEvents.size(); i++){
+                    if(lstItemEvents.get(i).equals(lstItemEvents.get(position))){
+                        preferenceUtils = new PreferenceUtils(getActivity());
+                        preferenceUtils.setInteger("itemHostID", position+1);
+                        preferenceUtils.setString("eventNameToLogged", lstItemEvents.get(position).getEventName());
+
+                        FragmentTransaction trans = getChildFragmentManager().beginTransaction();
+                        trans.replace(R.id.listUnlogged_container, new FragmentListLogged(), "HostUnlogged-HostProfile");
+                        trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        trans.addToBackStack(FRAGMENT_TAG);
+                        trans.commit();
+                    }
+                }
+            }
+        });
+
         recyclerAdapter.notifyDataSetChanged();
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.listUnlogged_map);
@@ -88,14 +121,13 @@ public class FragmentListUnlogged extends Fragment implements OnMapReadyCallback
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         fetchLastLocation();
-        //actualizeRecyclerView();
 
         return v;
     }
 
     private void fetchLastLocation(){
         if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(getActivity(), new String[]
+            ActivityCompat.requestPermissions(getActivity(), new String[]                           //If app doesn't have a permissions - ask for them
                     {Manifest.permission.ACCESS_FINE_LOCATION}, 101);
         }
         Task<Location> task = fusedLocationClient.getLastLocation();
@@ -124,7 +156,10 @@ public class FragmentListUnlogged extends Fragment implements OnMapReadyCallback
             Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
 
             List<Address> userCityAddress = null;
-            try {userCityAddress = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);} catch (IOException e) {
+            try {
+                userCityAddress = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             }
             String userCity = userCityAddress.get(0).getLocality();
@@ -137,7 +172,6 @@ public class FragmentListUnlogged extends Fragment implements OnMapReadyCallback
 
 //                  ==If event Cityname == current user Cityname then display vent marker on map====
                     for (int i = 0; i < response.body().size(); i++) {
-                        List<Address> eventCityAddress = null;
                         try {
                             eventCityAddress = geocoder.getFromLocation(response.body().get(i).getLatitude(),
                                     response.body().get(i).getLongitude(),
@@ -185,10 +219,6 @@ public class FragmentListUnlogged extends Fragment implements OnMapReadyCallback
         }
     };
 
-    private void setOnItemClickListener(InterfaceOnItemClickListener_RecyclerView listener){
-        mListener = (RecyclerView.OnItemTouchListener) listener;
-    }
-
 //===========================================Set map icons==========================================
     private BitmapDescriptor getMarkerIcon(String color) {
         //Set color for the map marker
@@ -204,5 +234,22 @@ public class FragmentListUnlogged extends Fragment implements OnMapReadyCallback
         Canvas canvas = new Canvas(bitmap);
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    @Override
+    public void onResume() {
+        if(preferenceUtils.getBoolean("isLogged")){
+            FragmentTransaction trans = getChildFragmentManager().beginTransaction();
+            trans.replace(R.id.listUnlogged_container, new FragmentListLogged(), "ListUnlogged-ListLogged");
+            trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            trans.addToBackStack(FRAGMENT_TAG);
+            trans.commit();
+        }
+        else{
+            Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("listUnlogged_screen");
+            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.remove(fragment);
+        }
+        super.onResume();
     }
 }

@@ -24,6 +24,9 @@ public interface JsonPlaceHolder {
     @GET("hosts")                                                                                   //Search HOSTS by login
     Call<List<ItemHost>> getHostByLogin(@Query("login") String login);
 
+    @GET("artists")
+    Call<List<ItemArtist>> getArtistsByHostID(@Query("userId") int id);
+
     @POST("hosts")
     Call<ItemHost> createHost(@Body ItemHost itemHost);
 }

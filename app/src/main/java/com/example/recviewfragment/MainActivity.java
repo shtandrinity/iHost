@@ -3,6 +3,7 @@ package com.example.recviewfragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
@@ -12,11 +13,12 @@ import com.google.android.material.tabs.TabLayout;
 
 //https://www.youtube.com/watch?v=oBhgyiBVd3k&t=35s
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private ViewPageAdapter adapter;
+    private FragmentStatePagerAdapter adapter;
+    private ViewPageAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(1).setIcon(R.drawable.list);
         tabLayout.getTabAt(2).setIcon(R.drawable.host);
         viewPager.setCurrentItem(1);
+
+
     }
 
     @Override

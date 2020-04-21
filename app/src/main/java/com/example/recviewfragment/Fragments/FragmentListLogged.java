@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +17,7 @@ import com.example.recviewfragment.API.ApiClient;
 import com.example.recviewfragment.Interfaces.CallbackInterfaceArtistsList;
 import com.example.recviewfragment.Model.ItemArtist;
 import com.example.recviewfragment.API.JsonPlaceHolder;
+import com.example.recviewfragment.PreferenceUtils;
 import com.example.recviewfragment.R;
 import com.example.recviewfragment.Adapters.RVAdapter_listLogged;
 
@@ -32,6 +34,8 @@ public class FragmentListLogged extends Fragment{
     private JsonPlaceHolder jsonPlaceHolder;
     private List<ItemArtist> lstItemArtists = new ArrayList<>();
     private RVAdapter_listLogged recyclerAdapter;
+    private TextView tvEventNameLogged;
+    private PreferenceUtils preferenceUtils = null;
 
     public FragmentListLogged(){}
 
@@ -43,7 +47,8 @@ public class FragmentListLogged extends Fragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_list_logged, container, false);
-        RecyclerView myRecyclerView = (RecyclerView) v.findViewById(R.id.list_recyclerView);
+        tvEventNameLogged = (TextView) v.findViewById(R.id.tvListLogged_eventName);
+        RecyclerView myRecyclerView = (RecyclerView) v.findViewById(R.id.listLogged_recyclerView);
         recyclerAdapter = new RVAdapter_listLogged(getContext(), lstItemArtists);
         myRecyclerView.setLayoutManager(new LinearLayoutManager((getActivity())));
         myRecyclerView.setAdapter(recyclerAdapter);
@@ -63,14 +68,13 @@ public class FragmentListLogged extends Fragment{
     }
 
     private void getList(){
-        Call<List<ItemArtist>> call = jsonPlaceHolder.getItemList();
+        preferenceUtils = new PreferenceUtils(getContext());
+        Call<List<ItemArtist>> call = jsonPlaceHolder.getArtistsByHostID(preferenceUtils.getInteger("itemHostID"));
         call.enqueue(new Callback<List<ItemArtist>>() {
 
             @Override
             public void onResponse(Call<List<ItemArtist>> call, Response<List<ItemArtist>> response) {
-                if(response.isSuccessful()) {
-                    callbackInterfaceArtistsList.onSuccess(response.body());
-                }
+                callbackInterfaceArtistsList.onSuccess(response.body());
             }
 
             @Override
@@ -84,13 +88,15 @@ public class FragmentListLogged extends Fragment{
         //Refresh RecyclerView after having GET call done
         @Override
         public void onSuccess(List<ItemArtist> list) {
-            for (ItemArtist itemArtist : list) {
-                lstItemArtists.add(new ItemArtist(
-                        itemArtist.getId(),
-                        itemArtist.getName(),
-                        itemArtist.getPhone(),
-                        itemArtist.getIsLocated()));
-            }
+                for (int i=0; i<list.size(); i++) {
+                    lstItemArtists.add(new ItemArtist(
+                            list.get(i).getId(),
+                            list.get(i).getName(),
+                            list.get(i).getPhone(),
+                            list.get(i).getIsLocated()));
+                }
+            String eventName = preferenceUtils.getString("eventNameToLogged");
+            tvEventNameLogged.setText(eventName);
             recyclerAdapter.notifyDataSetChanged();
         }
 

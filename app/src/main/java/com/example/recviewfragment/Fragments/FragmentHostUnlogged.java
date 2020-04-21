@@ -33,10 +33,18 @@ public class FragmentHostUnlogged extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Defines the xml file for the fragment
         v = inflater.inflate(R.layout.fragment_host_unlogged, container, false);
-
         MaterialButton btnNewEvent = (MaterialButton) v.findViewById(R.id.btnNewEvent_host);
         MaterialButton btnLogin_host = (MaterialButton) v.findViewById(R.id.btnLogin_host);
 
+        PreferenceUtils preferenceUtils = new PreferenceUtils(getActivity());                       //If user is logged - send to FragmentHostProfile
+        if(preferenceUtils.getBoolean("isLogged")){
+            FragmentTransaction trans = getChildFragmentManager().beginTransaction();
+            trans.replace(R.id.hostsUlogged_container, new FragmentHostProfile(), "HostUnlogged-HostProfile");
+            trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            trans.addToBackStack(FRAGMENT_TAG);
+            trans.commit();
+        }
+         //If user is not logged load FragmentHostUnlogged
         btnLogin_host.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +66,6 @@ public class FragmentHostUnlogged extends Fragment {
                 trans.commit();
             }
         });
-
         return v;
     }
 

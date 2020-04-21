@@ -33,10 +33,12 @@ public class RVAdapter_listLogged extends RecyclerView.Adapter<RVAdapter_listLog
     static class MyViewHolder extends RecyclerView.ViewHolder{
 
         private TextView tvArtistName;
+        private TextView tvArtistID;
 
         MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvArtistName = (TextView) itemView.findViewById(R.id.item_artist_lgd);
+            tvArtistID = (TextView) itemView.findViewById(R.id.item_artistID_lgd);
         }
     }
 
@@ -51,7 +53,7 @@ public class RVAdapter_listLogged extends RecyclerView.Adapter<RVAdapter_listLog
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.tvArtistName.setText(String.valueOf(mData.get(position).getId()) + " " +
-                mData.get(position).getName());
+        holder.tvArtistName.setText(String.valueOf(mData.get(position).getName()));
+        holder.tvArtistID.setText(String.valueOf(position+1));
     }
 }
