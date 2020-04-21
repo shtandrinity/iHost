@@ -5,11 +5,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.recviewfragment.Interfaces.OnItemClickListener;
 import com.example.recviewfragment.Model.ItemArtist;
 import com.example.recviewfragment.R;
 
@@ -19,6 +21,7 @@ public class RVAdapter_listLogged extends RecyclerView.Adapter<RVAdapter_listLog
 
     private Context context;
     private List<ItemArtist> mData;
+    private OnItemClickListener mListener;
 
     public RVAdapter_listLogged(Context context, List<ItemArtist> mData) {
         this.context = context;
@@ -30,15 +33,33 @@ public class RVAdapter_listLogged extends RecyclerView.Adapter<RVAdapter_listLog
         return mData.size();
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mListener = listener;
+    }
+
     static class MyViewHolder extends RecyclerView.ViewHolder{
 
         private TextView tvArtistName;
         private TextView tvArtistID;
+        private ImageView ivDelete;
 
-        MyViewHolder(@NonNull View itemView) {
+        MyViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             tvArtistName = (TextView) itemView.findViewById(R.id.item_artist_lgd);
             tvArtistID = (TextView) itemView.findViewById(R.id.item_artistID_lgd);
+            ivDelete = (ImageView) itemView.findViewById(R.id.ivDelete_lgd);
+
+            ivDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener!=null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){                                   //making sure the position is valid
+                            listener.onDeleteClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -47,7 +68,7 @@ public class RVAdapter_listLogged extends RecyclerView.Adapter<RVAdapter_listLog
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v;
         v = LayoutInflater.from(context).inflate(R.layout.item_artist_logged, parent, false);
-        return new MyViewHolder(v);
+        return new MyViewHolder(v, mListener);
     }
 
     @SuppressLint("SetTextI18n")

@@ -14,7 +14,7 @@ public class ItemHost implements Serializable {
 
     public ItemHost() {}
 
-    public ItemHost(String login, String password, String email, String eventName, double latitude, double longitude) {
+    public ItemHost(String email, String eventName, String password, String login, double latitude, double longitude) {
         this.login = login;
         this.password = password;
         this.email = email;

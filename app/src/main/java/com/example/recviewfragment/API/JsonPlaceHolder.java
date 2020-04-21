@@ -7,6 +7,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -29,4 +30,7 @@ public interface JsonPlaceHolder {
 
     @POST("hosts")
     Call<ItemHost> createHost(@Body ItemHost itemHost);
+
+    @DELETE("artists/{id}")
+    Call<Void> deleteArtist(@Path("id") int id);
 }

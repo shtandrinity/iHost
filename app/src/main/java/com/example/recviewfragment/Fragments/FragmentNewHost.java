@@ -129,7 +129,7 @@ public class FragmentNewHost extends Fragment{
         email = etEmail.getEditText().getText().toString();
         eventName = etEventName.getEditText().getText().toString();
 
-        ItemHost itemHost = new ItemHost(login, password, email, eventName, latitude, longitude);
+        ItemHost itemHost = new ItemHost(email, eventName, password, login, latitude, longitude);
         Call <ItemHost> call = jsonPlaceHolder.createHost(itemHost);
         call.enqueue(new Callback<ItemHost>() {
             @Override
@@ -142,6 +142,7 @@ public class FragmentNewHost extends Fragment{
                     preferenceUtils.setBoolean("isLogged", true);
                     preferenceUtils.setString("itemHost", itemHostBody);
                     preferenceUtils.setInteger("itemHostID", response.body().getId());
+                    preferenceUtils.setString("eventNameToLogged", eventName);
 
                     FragmentTransaction trans = getChildFragmentManager().beginTransaction();
                     trans.replace(R.id.newEventContainer, FragmentHostProfile.newInstance(), "NewHost-Profile");

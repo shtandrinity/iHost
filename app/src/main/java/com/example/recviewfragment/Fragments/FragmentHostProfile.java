@@ -56,7 +56,6 @@ public class FragmentHostProfile extends Fragment implements OnMapReadyCallback 
         etlogin = v.findViewById(R.id.tvProfileLogin);
         etEmail = v.findViewById(R.id.tvProfileEmail);
         btnLogout = v.findViewById(R.id.btnProfile_logOut);
-        setBackButtonLogic();
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.mapProfile);
         mapFragment.getMapAsync(this);
         preferenceUtils = new PreferenceUtils(getContext());
@@ -70,13 +69,8 @@ public class FragmentHostProfile extends Fragment implements OnMapReadyCallback 
             @Override
             public void onClick(View v) {
                 preferenceUtils.clearSavedInSharedPreference();
+
                 FragmentManager fm = getActivity().getSupportFragmentManager();
-
-//                FragmentTransaction trans = getChildFragmentManager().beginTransaction();
-//                trans.replace(R.id.hostProfileContainer, new FragmentHostUnlogged(), "Profile-Unlog");
-//                trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-
-
                 for (Fragment frag : fm.getFragments()) {
                         FragmentManager childFm = frag.getChildFragmentManager();
                         if (childFm.getBackStackEntryCount() > 0) {
@@ -84,7 +78,6 @@ public class FragmentHostProfile extends Fragment implements OnMapReadyCallback 
                         }
                         else childFm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
-//                trans.commit();
             }
         });
         return v;
@@ -101,20 +94,6 @@ public class FragmentHostProfile extends Fragment implements OnMapReadyCallback 
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
-    //I cant's go back from Host profile screen
-    private void setBackButtonLogic() {
-        v.setFocusableInTouchMode(true);
-        v.requestFocus();
-        v.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    return keyCode == KeyEvent.KEYCODE_BACK;
-                }
-                return false;
-            }
-        });
-    }
 
     //getting login data from sharedPreferences
     @SuppressLint("SetTextI18n")

@@ -10,11 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.recviewfragment.API.ApiClient;
 import com.example.recviewfragment.Interfaces.CallbackInterfaceArtistsList;
+import com.example.recviewfragment.Interfaces.OnItemClickListener;
 import com.example.recviewfragment.Model.ItemArtist;
 import com.example.recviewfragment.API.JsonPlaceHolder;
 import com.example.recviewfragment.PreferenceUtils;
@@ -36,6 +38,7 @@ public class FragmentListLogged extends Fragment{
     private RVAdapter_listLogged recyclerAdapter;
     private TextView tvEventNameLogged;
     private PreferenceUtils preferenceUtils = null;
+    String eventName = "";
 
     public FragmentListLogged(){}
 
@@ -47,15 +50,33 @@ public class FragmentListLogged extends Fragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_list_logged, container, false);
-        tvEventNameLogged = (TextView) v.findViewById(R.id.tvListLogged_eventName);
-        RecyclerView myRecyclerView = (RecyclerView) v.findViewById(R.id.listLogged_recyclerView);
-        recyclerAdapter = new RVAdapter_listLogged(getContext(), lstItemArtists);
-        myRecyclerView.setLayoutManager(new LinearLayoutManager((getActivity())));
-        myRecyclerView.setAdapter(recyclerAdapter);
-        recyclerAdapter.notifyDataSetChanged();
-        //===============================================================
-        //new PreferenceUtils(getContext()).clearSavedInSharedPreference();
-        //===============================================================
+
+        setRecyclerView();
+
+        recyclerAdapter.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onDeleteClick(int position) {
+                Integer artistIdOnAPI = lstItemArtists.get(position).getId();
+                Call<Void> call = jsonPlaceHolder.deleteArtist(artistIdOnAPI);
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Log.d("Artist delete status: ", "SUCCESS");
+                        lstItemArtists.remove(position);
+                        recyclerAdapter.notifyItemRemoved(position);
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Log.d("Artist delete status - ", "FAILURE: " + t);
+                    }
+                });
+            }
+
+            @Override
+            public void onItemClick(int position) {}
+        });
         return v;
     }
 
@@ -63,17 +84,27 @@ public class FragmentListLogged extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         jsonPlaceHolder = ApiClient.getInterface();
+        preferenceUtils = new PreferenceUtils(getContext());
+        eventName = preferenceUtils.getString("eventNameToLogged");
 
         getList();
     }
 
+    public void setRecyclerView(){
+        tvEventNameLogged = (TextView) v.findViewById(R.id.tvListLogged_eventName);
+        RecyclerView myRecyclerView = (RecyclerView) v.findViewById(R.id.listLogged_recyclerView);
+        recyclerAdapter = new RVAdapter_listLogged(getContext(), lstItemArtists);
+        myRecyclerView.setLayoutManager(new LinearLayoutManager((getActivity())));
+        myRecyclerView.setAdapter(recyclerAdapter);
+    }
+
     private void getList(){
-        preferenceUtils = new PreferenceUtils(getContext());
         Call<List<ItemArtist>> call = jsonPlaceHolder.getArtistsByHostID(preferenceUtils.getInteger("itemHostID"));
         call.enqueue(new Callback<List<ItemArtist>>() {
 
             @Override
             public void onResponse(Call<List<ItemArtist>> call, Response<List<ItemArtist>> response) {
+
                 callbackInterfaceArtistsList.onSuccess(response.body());
             }
 
@@ -95,7 +126,6 @@ public class FragmentListLogged extends Fragment{
                             list.get(i).getPhone(),
                             list.get(i).getIsLocated()));
                 }
-            String eventName = preferenceUtils.getString("eventNameToLogged");
             tvEventNameLogged.setText(eventName);
             recyclerAdapter.notifyDataSetChanged();
         }

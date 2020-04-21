@@ -78,10 +78,6 @@ public class FragmentLogin extends Fragment {
 
             fm.popBackStackImmediate("hostUnlogged_screen", 0);
             trans.commit();
-
-//            //Refresh fragments in ViewPager
-//            ViewPager vp=(ViewPager) getActivity().findViewById(R.id.viewPager);
-//            vp.getAdapter().notifyDataSetChanged();
         }
     };
 
@@ -132,7 +128,7 @@ public class FragmentLogin extends Fragment {
                         preferenceUtils.setBoolean("isLogged", true);
                         preferenceUtils.setString("itemHost", itemHostBody);
                         preferenceUtils.setInteger("itemHostID", response.body().get(0).getId());
-
+                        preferenceUtils.setString("eventNameToLogged", response.body().get(0).getEventName());
                         CallbackInterfaceAddHost.onSuccess();
                     }
                     else {

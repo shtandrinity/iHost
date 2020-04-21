@@ -46,7 +46,6 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.gson.internal.$Gson$Preconditions;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -94,12 +93,13 @@ public class FragmentListUnlogged extends Fragment implements OnMapReadyCallback
         recyclerAdapter = new RVAdapter_listUnlogged(getContext(), lstItemEvents);
         myRecyclerView.setLayoutManager(new LinearLayoutManager((getActivity())));
         myRecyclerView.setAdapter(recyclerAdapter);
+        recyclerAdapter.notifyDataSetChanged();
 
         recyclerAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 for(int i=0; i<lstItemEvents.size(); i++){
-                    if(lstItemEvents.get(i).equals(lstItemEvents.get(position))){
+                    if(lstItemEvents.get(i).equals(lstItemEvents.get(position))) {
                         preferenceUtils = new PreferenceUtils(getActivity());
                         preferenceUtils.setInteger("itemHostID", position+1);
                         preferenceUtils.setString("eventNameToLogged", lstItemEvents.get(position).getEventName());
@@ -112,9 +112,10 @@ public class FragmentListUnlogged extends Fragment implements OnMapReadyCallback
                     }
                 }
             }
-        });
 
-        recyclerAdapter.notifyDataSetChanged();
+            @Override
+            public void onDeleteClick(int position) {}
+        });
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.listUnlogged_map);
         mapFragment.getMapAsync(this);
@@ -192,10 +193,10 @@ public class FragmentListUnlogged extends Fragment implements OnMapReadyCallback
 
                         if (eventCity.equals(userCity)) {
                             lstItemEvents.add(new ItemHost(
-                                    response.body().get(i).getLogin(),
-                                    response.body().get(i).getPassword(),
                                     response.body().get(i).getEmail(),
                                     response.body().get(i).getEventName(),
+                                    response.body().get(i).getPassword(),
+                                    response.body().get(i).getLogin(),
                                     response.body().get(i).getLatitude(),
                                     response.body().get(i).getLongitude()));
                             MarkerOptions markerOptions = new MarkerOptions()
@@ -205,9 +206,9 @@ public class FragmentListUnlogged extends Fragment implements OnMapReadyCallback
                             builder.include((new LatLng(response.body().get(i).getLatitude(), response.body().get(i).getLongitude())));
                         }
                     }
+                    recyclerAdapter.notifyDataSetChanged();
                     LatLngBounds bounds = builder.build();
                     map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 25));
-                    recyclerAdapter.notifyDataSetChanged();
                 }
 
 
@@ -244,11 +245,6 @@ public class FragmentListUnlogged extends Fragment implements OnMapReadyCallback
             trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             trans.addToBackStack(FRAGMENT_TAG);
             trans.commit();
-        }
-        else{
-            Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("listUnlogged_screen");
-            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.remove(fragment);
         }
         super.onResume();
     }
