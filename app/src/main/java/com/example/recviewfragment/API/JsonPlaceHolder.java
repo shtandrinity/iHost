@@ -26,10 +26,16 @@ public interface JsonPlaceHolder {
     Call<List<ItemHost>> getHostByLogin(@Query("login") String login);
 
     @GET("artists")
+    Call<List<ItemArtist>> getArtistByDeviceID(@Query("uniqueId") String id);
+
+    @GET("artists")
     Call<List<ItemArtist>> getArtistsByHostID(@Query("userId") int id);
 
     @POST("hosts")
     Call<ItemHost> createHost(@Body ItemHost itemHost);
+
+    @POST("artists")
+    Call<ItemArtist> createArtist(@Body ItemArtist itemArtist);
 
     @DELETE("artists/{id}")
     Call<Void> deleteArtist(@Path("id") int id);

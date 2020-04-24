@@ -5,15 +5,24 @@ public class ItemArtist {
     private int id;
     private String name;
     private String phone;
-    private boolean isLocated;
+    private String deviceId;
+    private int userId;
 
     public ItemArtist() {}
 
-    public ItemArtist(int id, String name, String phone, boolean isLocated) {
-        this.id = id;
+    public ItemArtist(String deviceId, String name, String phone, int id, int userId) {
+        this.deviceId = deviceId;
         this.name = name;
         this.phone = phone;
-        this.isLocated = isLocated;
+        this.id = id;
+        this.userId = userId;
+    }
+
+    public ItemArtist(String deviceId, String name, String phone, int userId) {
+        this.deviceId = deviceId;
+        this.name = name;
+        this.phone = phone;
+        this.userId = userId;
     }
 
     public int getId() {
@@ -28,10 +37,6 @@ public class ItemArtist {
         return phone;
     }
 
-    public boolean getIsLocated() {
-        return isLocated;
-    }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -44,7 +49,19 @@ public class ItemArtist {
         this.phone = phone;
     }
 
-    public void setLocated(boolean located) {
-        isLocated = located;
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

@@ -1,5 +1,5 @@
 package com.example.recviewfragment.Interfaces;
 
-public interface CallbackInterfaceAddHost {
+public interface CallbackInterfaceVoid {
     void onSuccess();
 }

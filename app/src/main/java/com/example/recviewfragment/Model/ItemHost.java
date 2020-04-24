@@ -23,6 +23,16 @@ public class ItemHost implements Serializable {
         this.longitude = longitude;
     }
 
+    public ItemHost(String email, String eventName, String password, String login, double latitude, double longitude, int id) {
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.eventName = eventName;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }

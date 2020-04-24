@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/listArtistsUnlogged_container"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -15,7 +16,8 @@
         android:textSize="30dp"
         android:textStyle="bold"
         android:textAlignment="center"
-        android:gravity="center_horizontal" />
+        android:gravity="center_horizontal"
+        android:layout_alignParentTop="true"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listArtists_recyclerView_Unlogged"
@@ -23,6 +25,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tvListArtists_eventName_Unlogged"
-        />
+        android:layout_above="@+id/btnSignUp_listArtistsUnlogged"/>
 
-</LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSignUp_listArtistsUnlogged"
+        android:text="Sign Up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:strokeColor="@color/m3Red"
+        app:strokeWidth="2dp"
+        android:textColor="@color/m3Red"
+        android:theme="@style/Theme.MaterialComponents.Light"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>

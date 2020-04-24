@@ -1,6 +1,7 @@
 package com.example.recviewfragment.Fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -12,6 +13,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -33,6 +35,7 @@ import com.example.recviewfragment.Model.ItemHost;
 import com.example.recviewfragment.PreferenceUtils;
 import com.example.recviewfragment.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -43,11 +46,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -59,16 +64,20 @@ public class FragmentListEvents extends Fragment implements OnMapReadyCallback {
 
     private View v;
     private List<ItemHost> lstItemEvents = new ArrayList<>();
+    private List<ItemHost> lstItemEventsAll = new ArrayList<>();
+    private List<String> isInCity = new ArrayList<>();
     private RvAdapter_listEvents recyclerAdapter;
 
     private final String FRAGMENT_TAG = "listEvents_screen";
     private JsonPlaceHolder jsonPlaceHolder;
 
     private PreferenceUtils preferenceUtils;
-    private Location userLocation;
     private FusedLocationProviderClient fusedLocationClient;
     private GoogleMap map;
     private List<Address> eventCityAddress = null;
+
+    LocationRequest mLocationRequest;
+    Location mLastLocation;
 
 
     public FragmentListEvents() {}
@@ -80,6 +89,7 @@ public class FragmentListEvents extends Fragment implements OnMapReadyCallback {
         View v = inflater.inflate(R.layout.fragment_list_events, container, false);
 
         preferenceUtils = new PreferenceUtils(getContext());
+        //preferenceUtils.clearSavedInSharedPreference();
         if(preferenceUtils.getBoolean("isLogged")){
             FragmentTransaction trans = getChildFragmentManager().beginTransaction();
             trans.replace(R.id.listEvents_container, new FragmentListArtists_logged(), "HostUnlogged-HostProfile");
@@ -97,11 +107,17 @@ public class FragmentListEvents extends Fragment implements OnMapReadyCallback {
         recyclerAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                for(int i=0; i<lstItemEvents.size(); i++){
-                    if(lstItemEvents.get(i).equals(lstItemEvents.get(position))) {
+                for(int i=0; i<lstItemEventsAll.size(); i++){
+                    if(lstItemEventsAll.get(i).getEventName().equals(lstItemEvents.get(position).getEventName())) {
+
                         preferenceUtils = new PreferenceUtils(getActivity());
-                        preferenceUtils.setInteger("itemHostID", position+1);
-                        preferenceUtils.setString("eventNameToLogged", lstItemEvents.get(position).getEventName());
+                        preferenceUtils.setInteger("itemHostID", lstItemEventsAll.get(i).getId());
+
+                        int b = lstItemEventsAll.size();
+
+                        String itemHostBody = preferenceUtils.serializeToJson(lstItemEventsAll.get(i));
+                        preferenceUtils.setString("itemHostEvent", itemHostBody);
+                        preferenceUtils.setString("eventName_to_ListOfArtists", lstItemEventsAll.get(i).getEventName());
 
                         FragmentTransaction trans = getChildFragmentManager().beginTransaction();
                         trans.replace(R.id.listEvents_container, new FragmentListArtists_unlogged(), "lEvents-lArtists_Unlogged");
@@ -126,20 +142,28 @@ public class FragmentListEvents extends Fragment implements OnMapReadyCallback {
     }
 
     private void fetchLastLocation(){
-        if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(getActivity(), new String[]                           //If app doesn't have a permissions - ask for them
-                    {Manifest.permission.ACCESS_FINE_LOCATION}, 101);
-        }
-        Task<Location> task = fusedLocationClient.getLastLocation();
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
+//        if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+//            ActivityCompat.requestPermissions(getActivity(), new String[]                           //If app doesn't have a permissions - ask for them
+//                    {Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+//        }
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(120000); // two minute interval
+        mLocationRequest.setFastestInterval(120000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+
+        fusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 if(location!=null){
-                    userLocation = location;
-//                    map.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-//                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12))
                     callbackInterfaceMap.getEventsListInCity(location);
                 }
+            }
+        });
+        fusedLocationClient.getLastLocation().addOnFailureListener(new OnFailureListener() {
+            @SuppressLint("LongLogTag")
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("GET CURRENT LOCATION ERROR", e.getMessage());
             }
         });
     }
@@ -167,6 +191,7 @@ public class FragmentListEvents extends Fragment implements OnMapReadyCallback {
             jsonPlaceHolder = ApiClient.getInterface();
             Call<List<ItemHost>> call = jsonPlaceHolder.getHostList();
             call.enqueue(new Callback<List<ItemHost>>() {
+                @SuppressLint("LongLogTag")
                 @Override
                 public void onResponse(Call<List<ItemHost>> call, Response<List<ItemHost>> response) {
 
@@ -191,23 +216,33 @@ public class FragmentListEvents extends Fragment implements OnMapReadyCallback {
                         builder.include(userLatLng);
 
                         if (eventCity.equals(userCity)) {
-                            lstItemEvents.add(new ItemHost(
+                            ItemHost itemHost = new ItemHost(
                                     response.body().get(i).getEmail(),
                                     response.body().get(i).getEventName(),
                                     response.body().get(i).getPassword(),
                                     response.body().get(i).getLogin(),
                                     response.body().get(i).getLatitude(),
-                                    response.body().get(i).getLongitude()));
+                                    response.body().get(i).getLongitude(),
+                                    response.body().get(i).getId());
+                            lstItemEvents.add(itemHost);
+                            lstItemEventsAll.add(itemHost);
                             MarkerOptions markerOptions = new MarkerOptions()
                                     .position((new LatLng(response.body().get(i).getLatitude(), response.body().get(i).getLongitude())))
                                     .title(response.body().get(i).getEventName());
                             map.addMarker(markerOptions);
                             builder.include((new LatLng(response.body().get(i).getLatitude(), response.body().get(i).getLongitude())));
+
+                        }
+                        else{
+                            lstItemEventsAll.add(new ItemHost("","","","",0,0));
                         }
                     }
                     recyclerAdapter.notifyDataSetChanged();
                     LatLngBounds bounds = builder.build();
                     map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 25));
+
+                    Log.d("lstItemEvents SIZE is", String.valueOf(lstItemEvents.size()));
+                    Log.d("lstItemEventsAll SIZE is", String.valueOf(lstItemEventsAll.size()));
                 }
 
 
@@ -247,4 +282,5 @@ public class FragmentListEvents extends Fragment implements OnMapReadyCallback {
         }
         super.onResume();
     }
+
 }

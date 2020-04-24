@@ -125,10 +125,11 @@ public class FragmentListArtists_logged extends Fragment implements FragmentList
         public void onSuccess(List<ItemArtist> list) {
                 for (int i=0; i<list.size(); i++) {
                     lstItemArtists.add(new ItemArtist(
-                            list.get(i).getId(),
+                            list.get(i).getDeviceId(),
                             list.get(i).getName(),
                             list.get(i).getPhone(),
-                            list.get(i).getIsLocated()));
+                            list.get(i).getId(),
+                            list.get(i).getUserId()));
                 }
             tvEventNameLogged.setText(eventName);
             recyclerAdapter.notifyDataSetChanged();

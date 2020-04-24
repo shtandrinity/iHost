@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.recviewfragment.API.ApiClient;
-import com.example.recviewfragment.Interfaces.CallbackInterfaceAddHost;
+import com.example.recviewfragment.Interfaces.CallbackInterfaceVoid;
 import com.example.recviewfragment.Model.ItemHost;
 import com.example.recviewfragment.API.JsonPlaceHolder;
 import com.example.recviewfragment.PreferenceUtils;
@@ -65,7 +64,7 @@ public class FragmentLogin extends Fragment {
         return v;
     }
 
-    private CallbackInterfaceAddHost CallbackInterfaceAddHost = new CallbackInterfaceAddHost() {
+    private CallbackInterfaceVoid CallbackInterfaceVoid = new CallbackInterfaceVoid() {
         //Sending user to HostProfile fragment only after Login is succesfull
         @Override
         public void onSuccess() {
@@ -129,7 +128,7 @@ public class FragmentLogin extends Fragment {
                         preferenceUtils.setString("itemHost", itemHostBody);
                         preferenceUtils.setInteger("itemHostID", response.body().get(0).getId());
                         preferenceUtils.setString("eventName_to_ListOfArtists", response.body().get(0).getEventName());
-                        CallbackInterfaceAddHost.onSuccess();
+                        CallbackInterfaceVoid.onSuccess();
                     }
                     else {
                         etPassword.setError("Wrong login or password");
