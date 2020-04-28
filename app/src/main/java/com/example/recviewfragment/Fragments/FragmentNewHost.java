@@ -4,7 +4,7 @@ import com.example.recviewfragment.API.ApiClient;
 import com.example.recviewfragment.Interfaces.CallbackInterfaceRetrofit;
 import com.example.recviewfragment.Model.ItemHost;
 import com.example.recviewfragment.API.JsonPlaceHolder;
-import com.example.recviewfragment.PreferenceUtils;
+import com.example.recviewfragment.Model.PreferenceUtils;
 import com.example.recviewfragment.R;
 import com.google.android.gms.common.api.Status;
 
@@ -129,7 +129,7 @@ public class FragmentNewHost extends Fragment{
         email = etEmail.getEditText().getText().toString();
         eventName = etEventName.getEditText().getText().toString();
 
-        ItemHost itemHost = new ItemHost(email, eventName, password, login, latitude, longitude);
+        ItemHost itemHost = new ItemHost(email, eventName, password, login, latitude, longitude, false);
         Call <ItemHost> call = jsonPlaceHolder.createHost(itemHost);
         call.enqueue(new Callback<ItemHost>() {
             @Override

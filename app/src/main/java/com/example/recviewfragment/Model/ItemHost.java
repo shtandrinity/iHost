@@ -11,19 +11,22 @@ public class ItemHost implements Serializable {
     private String eventName;
     private double latitude;
     private double longitude;
+    private boolean isActive;
+
 
     public ItemHost() {}
 
-    public ItemHost(String email, String eventName, String password, String login, double latitude, double longitude) {
+    public ItemHost(String email, String eventName, String password, String login, double latitude, double longitude, boolean isActive) {
         this.login = login;
         this.password = password;
         this.email = email;
         this.eventName = eventName;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.isActive = isActive;
     }
 
-    public ItemHost(String email, String eventName, String password, String login, double latitude, double longitude, int id) {
+    public ItemHost(String email, String eventName, String password, String login, double latitude, double longitude, int id, boolean isActive) {
         this.login = login;
         this.password = password;
         this.email = email;
@@ -31,6 +34,7 @@ public class ItemHost implements Serializable {
         this.latitude = latitude;
         this.longitude = longitude;
         this.id = id;
+        this.isActive = isActive;
     }
 
     public int getId() {
@@ -87,5 +91,13 @@ public class ItemHost implements Serializable {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean active) {
+        isActive = active;
     }
 }

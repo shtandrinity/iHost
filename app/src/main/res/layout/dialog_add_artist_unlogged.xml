@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center_horizontal|center_vertical">
+
+    <LinearLayout
+        android:background="@color/backgroundFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tvArtistName_dialog_unlogged"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Artist Name"
+            app:hintTextColor="@color/blue"
+            android:textColorHint="@color/colorPrimaryDark"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            app:errorEnabled="true"
+            android:textColor="@color/blue"
+            app:boxStrokeColor="@color/colorPrimary"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:text=""
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tvArtisPhone_dialog_unlogged"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone Number"
+            app:hintTextColor="@color/blue"
+            android:textColorHint="@color/colorPrimaryDark"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            app:errorEnabled="true"
+            android:textColor="@color/blue"
+            app:boxStrokeColor="@color/colorPrimary"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:text=""
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:inputType="phone"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
+            android:background="@color/backgroundFragment">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCheckLocation_dialog_unlogged"
+                android:text="Check Location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:backgroundTint="@color/colorPrimaryDark"
+                app:strokeColor="@color/backgroundFragment"
+                app:strokeWidth="2dp"
+                android:textColor="@color/blue"
+                android:theme="@style/Theme.MaterialComponents.Light" />
+
+            <ImageView
+                android:id="@+id/ivCheckLocation_dialog_unlogged"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:srcCompat="@drawable/check_question"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/btnCheckLocation_dialog_unlogged"/>
+        </RelativeLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSignUp_dialog_unlogged"
+            android:text="Sign Up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/colorPrimaryDark"
+            app:strokeColor="@color/m3Red"
+            app:strokeWidth="2dp"
+            android:textColor="@color/m3Red"
+            android:theme="@style/Theme.MaterialComponents.Light"
+            android:layout_gravity="center_vertical|center_horizontal"/>
+
+    </LinearLayout>
+</RelativeLayout>

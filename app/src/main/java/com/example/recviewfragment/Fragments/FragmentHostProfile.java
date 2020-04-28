@@ -7,17 +7,14 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.recviewfragment.Model.ItemHost;
-import com.example.recviewfragment.API.JsonPlaceHolder;
-import com.example.recviewfragment.PreferenceUtils;
+import com.example.recviewfragment.Model.PreferenceUtils;
 import com.example.recviewfragment.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -51,19 +48,11 @@ public class FragmentHostProfile extends Fragment implements OnMapReadyCallback 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_host_profile, container, false);
-        etEventName = v.findViewById(R.id.tvProfileEventName);
-        etEventAddress = v.findViewById(R.id.tvProfileLocation);
-        etlogin = v.findViewById(R.id.tvProfileLogin);
-        etEmail = v.findViewById(R.id.tvProfileEmail);
-        btnLogout = v.findViewById(R.id.btnProfile_logOut);
-        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.mapProfile);
-        mapFragment.getMapAsync(this);
-        preferenceUtils = new PreferenceUtils(getContext());
-        try {
-            getData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        setupUI();
+
+        try { getData(); }
+        catch (IOException e) { e.printStackTrace(); }
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +69,19 @@ public class FragmentHostProfile extends Fragment implements OnMapReadyCallback 
                 }
             }
         });
+
         return v;
+    }
+    private void setupUI(){
+
+        etEventName = v.findViewById(R.id.tvProfileEventName);
+        etEventAddress = v.findViewById(R.id.tvProfileLocation);
+        etlogin = v.findViewById(R.id.tvProfileLogin);
+        etEmail = v.findViewById(R.id.tvProfileEmail);
+        btnLogout = v.findViewById(R.id.btnProfile_logOut);
+        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.mapProfile);
+        mapFragment.getMapAsync(this);
+        preferenceUtils = new PreferenceUtils(getContext());
     }
 
     @Override

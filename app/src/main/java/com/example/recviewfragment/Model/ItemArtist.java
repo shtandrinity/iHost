@@ -8,21 +8,25 @@ public class ItemArtist {
     private String deviceId;
     private int userId;
 
+    private boolean currentlyOnStage;
+
     public ItemArtist() {}
 
-    public ItemArtist(String deviceId, String name, String phone, int id, int userId) {
+    public ItemArtist(String deviceId, String name, String phone, int id, int userId, boolean currentlyOnStage) {
         this.deviceId = deviceId;
         this.name = name;
         this.phone = phone;
         this.id = id;
         this.userId = userId;
+        this.currentlyOnStage = currentlyOnStage;
     }
 
-    public ItemArtist(String deviceId, String name, String phone, int userId) {
+    public ItemArtist(String deviceId, String name, String phone, int userId, boolean currentlyOnStage) {
         this.deviceId = deviceId;
         this.name = name;
         this.phone = phone;
         this.userId = userId;
+        this.currentlyOnStage = currentlyOnStage;
     }
 
     public int getId() {
@@ -63,5 +67,13 @@ public class ItemArtist {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public boolean getIsCurrentlyOnStage() {
+        return currentlyOnStage;
+    }
+
+    public void setCurrentlyOnStage(boolean currentlyOnStage) {
+        this.currentlyOnStage = currentlyOnStage;
     }
 }

@@ -13,7 +13,7 @@
         android:gravity="center_horizontal">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tvArtistName_dialog"
+            android:id="@+id/tvArtistName_dialog_logged"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Artist Name"
@@ -35,7 +35,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tvArtisPhone_dialog"
+            android:id="@+id/tvArtisPhone_dialog_logged"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Phone Number"
@@ -63,30 +63,10 @@
             android:orientation="horizontal"
             android:layout_marginRight="40dp"
             android:layout_marginLeft="40dp"
-            android:background="@color/backgroundFragment">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCheckLocation_dialog"
-                android:text="Check Location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:backgroundTint="@color/colorPrimaryDark"
-                app:strokeColor="@color/backgroundFragment"
-                app:strokeWidth="2dp"
-                android:textColor="@color/blue"
-                android:theme="@style/Theme.MaterialComponents.Light" />
-
-            <ImageView
-                android:id="@+id/ivCheckLocation_dialog"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                app:srcCompat="@drawable/check_question"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/btnCheckLocation_dialog"/>
-        </RelativeLayout>
+            android:background="@color/backgroundFragment"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSignUp_dialog"
+            android:id="@+id/btnSignUp_dialog_logged"
             android:text="Sign Up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

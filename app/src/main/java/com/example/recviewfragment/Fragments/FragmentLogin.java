@@ -17,7 +17,7 @@ import com.example.recviewfragment.API.ApiClient;
 import com.example.recviewfragment.Interfaces.CallbackInterfaceVoid;
 import com.example.recviewfragment.Model.ItemHost;
 import com.example.recviewfragment.API.JsonPlaceHolder;
-import com.example.recviewfragment.PreferenceUtils;
+import com.example.recviewfragment.Model.PreferenceUtils;
 import com.example.recviewfragment.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;

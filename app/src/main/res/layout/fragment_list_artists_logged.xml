@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/listArtistsLogged_container"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -7,7 +8,7 @@
     android:background="@color/backgroundFragment">
 
     <TextView
-        android:id="@+id/tvListArtists_eventName"
+        android:id="@+id/tvListArtists_eventName_logged"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#2b2b2b"
@@ -18,11 +19,52 @@
         android:gravity="center_horizontal" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listArtists_recyclerView"
-        android:paddingTop="10dp"
+        android:id="@+id/listArtists_recyclerView_logged"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tvListArtists_eventName"
-        />
+        android:layout_above="@+id/btnAddArtist_listArtists_logged"
+        android:layout_below="@id/tvListArtists_eventName_logged"
+        android:paddingTop="10dp" />
 
-</LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAddArtist_listArtists_logged"
+        android:text="Add Artist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:strokeColor="@color/blue"
+        app:strokeWidth="2dp"
+        android:textColor="@color/blue"
+        android:theme="@style/Theme.MaterialComponents.Light"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnStart_listArtists_logged"
+        android:text="Start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:strokeColor="@color/colorPrimary"
+        app:strokeWidth="2dp"
+        android:textColor="@color/colorPrimary"
+        android:theme="@style/Theme.MaterialComponents.Light"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnStop_listArtists_logged"
+        android:text="Stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:strokeColor="@color/m3Red"
+        app:strokeWidth="2dp"
+        android:textColor="@color/m3Red"
+        android:theme="@style/Theme.MaterialComponents.Light"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>

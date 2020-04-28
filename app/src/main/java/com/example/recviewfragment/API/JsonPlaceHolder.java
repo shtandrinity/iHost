@@ -9,7 +9,9 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -17,7 +19,7 @@ import retrofit2.http.Query;
 
 public interface JsonPlaceHolder {
     @GET("artists")
-    Call<List<ItemArtist>> getItemList();
+    Call<List<ItemArtist>> getArtistList();
 
     @GET("hosts")
     Call<List<ItemHost>> getHostList();
@@ -36,6 +38,9 @@ public interface JsonPlaceHolder {
 
     @POST("artists")
     Call<ItemArtist> createArtist(@Body ItemArtist itemArtist);
+
+    @PATCH("artists/{id}")
+    Call<ItemArtist> updateArtistFields(@Path("id") int id, @Body ItemArtist artistBody);
 
     @DELETE("artists/{id}")
     Call<Void> deleteArtist(@Path("id") int id);

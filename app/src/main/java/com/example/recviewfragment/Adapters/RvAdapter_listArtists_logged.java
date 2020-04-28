@@ -2,10 +2,13 @@ package com.example.recviewfragment.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,9 +26,14 @@ public class RvAdapter_listArtists_logged extends RecyclerView.Adapter<RvAdapter
     private List<ItemArtist> mData;
     private OnItemClickListener mListener;
 
+
     public RvAdapter_listArtists_logged(Context context, List<ItemArtist> mData) {
         this.context = context;
         this.mData = mData;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mListener = listener;
     }
 
     @Override
@@ -33,21 +41,20 @@ public class RvAdapter_listArtists_logged extends RecyclerView.Adapter<RvAdapter
         return mData.size();
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener){
-        mListener = listener;
-    }
-
-    static class MyViewHolder extends RecyclerView.ViewHolder{
+     class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvArtistName;
         private TextView tvArtistID;
         private ImageView ivDelete;
+        private RelativeLayout rlContainer;
 
+        @SuppressLint("ResourceAsColor")
         MyViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             tvArtistName = (TextView) itemView.findViewById(R.id.item_artist_lgd);
             tvArtistID = (TextView) itemView.findViewById(R.id.item_artistID_lgd);
             ivDelete = (ImageView) itemView.findViewById(R.id.ivDelete_lgd);
+            rlContainer = (RelativeLayout) itemView.findViewById(R.id.list_artists_logged_container);
 
             ivDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -61,20 +68,31 @@ public class RvAdapter_listArtists_logged extends RecyclerView.Adapter<RvAdapter
                 }
             });
         }
-    }
+     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v;
-        v = LayoutInflater.from(context).inflate(R.layout.item_artist_in_list_artists, parent, false);
+        v = LayoutInflater.from(context).inflate(R.layout.item_artist_in_list_artists_logged, parent, false);
         return new MyViewHolder(v, mListener);
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "ResourceAsColor"})
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        holder.itemView.setBackgroundColor(Color.parseColor("#ffffff"));
         holder.tvArtistName.setText(String.valueOf(mData.get(position).getName()));
         holder.tvArtistID.setText(String.valueOf(position+1));
+        if(mData.get(position).getIsCurrentlyOnStage()){
+            holder.rlContainer.setBackgroundColor(Color.parseColor("#5bbce4"));
+//            if ((position>0) && !mData.get(position - 1).getIsCurrentlyOnStage()) {
+//                    holder.rlContainer.setBackgroundColor(R.color.colorPrimaryDark);
+//                    holder.rlContainer.setBackgroundResource(R.drawable.rect);
+//            }
+        }
+        else{
+            holder.rlContainer.setBackgroundResource(R.drawable.rect);
+        }
     }
 }

@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.recviewfragment.PreferenceUtils;
+import com.example.recviewfragment.Model.PreferenceUtils;
 import com.example.recviewfragment.R;
 import com.google.android.material.button.MaterialButton;
 

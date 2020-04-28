@@ -1,9 +1,7 @@
 package com.example.recviewfragment.Fragments;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,7 +12,6 @@ import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -32,7 +29,7 @@ import com.example.recviewfragment.Adapters.RvAdapter_listEvents;
 import com.example.recviewfragment.Interfaces.CallbackInterfaceMap;
 import com.example.recviewfragment.Interfaces.OnItemClickListener;
 import com.example.recviewfragment.Model.ItemHost;
-import com.example.recviewfragment.PreferenceUtils;
+import com.example.recviewfragment.Model.PreferenceUtils;
 import com.example.recviewfragment.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
@@ -48,11 +45,9 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -130,6 +125,11 @@ public class FragmentListEvents extends Fragment implements OnMapReadyCallback {
 
             @Override
             public void onDeleteClick(int position) {}
+
+            @Override
+            public void onItemHighlight(int position) {
+
+            }
         });
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.listEvents_map);
@@ -223,7 +223,8 @@ public class FragmentListEvents extends Fragment implements OnMapReadyCallback {
                                     response.body().get(i).getLogin(),
                                     response.body().get(i).getLatitude(),
                                     response.body().get(i).getLongitude(),
-                                    response.body().get(i).getId());
+                                    response.body().get(i).getId(),
+                                    response.body().get(i).getIsActive());
                             lstItemEvents.add(itemHost);
                             lstItemEventsAll.add(itemHost);
                             MarkerOptions markerOptions = new MarkerOptions()
@@ -234,7 +235,7 @@ public class FragmentListEvents extends Fragment implements OnMapReadyCallback {
 
                         }
                         else{
-                            lstItemEventsAll.add(new ItemHost("","","","",0,0));
+                            lstItemEventsAll.add(new ItemHost("","","","",0,0,false));
                         }
                     }
                     recyclerAdapter.notifyDataSetChanged();

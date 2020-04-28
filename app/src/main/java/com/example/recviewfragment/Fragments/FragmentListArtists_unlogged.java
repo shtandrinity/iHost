@@ -29,11 +29,10 @@ import com.example.recviewfragment.API.JsonPlaceHolder;
 import com.example.recviewfragment.Adapters.RvAdapter_listArtists_unlogged;
 import com.example.recviewfragment.Interfaces.CallbackInterfaceArtistsList;
 import com.example.recviewfragment.Interfaces.CallbackInterfaceDoubleDouble;
-import com.example.recviewfragment.Interfaces.CallbackInterfaceVoid;
 import com.example.recviewfragment.Interfaces.FragmentListInterface;
 import com.example.recviewfragment.Model.ItemArtist;
 import com.example.recviewfragment.Model.ItemHost;
-import com.example.recviewfragment.PreferenceUtils;
+import com.example.recviewfragment.Model.PreferenceUtils;
 import com.example.recviewfragment.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -65,11 +64,10 @@ public class FragmentListArtists_unlogged extends Fragment implements FragmentLi
     private List<ItemArtist> lstItemArtists = new ArrayList<>();
     private RvAdapter_listArtists_unlogged recyclerAdapter;
     private PreferenceUtils preferenceUtils = null;
-    private FusedLocationProviderClient fusedLocationClient;
     private int hostID;
     private boolean artistIsAtLocation = false;
     private boolean artistDeviceAlreadyInSystem = true;
-    String deviceID;
+    private String deviceID;
     private final String FRAGMENT_TAG = "listArtistsUnlogged_screen";
 
     public FragmentListArtists_unlogged() {}
@@ -135,14 +133,13 @@ public class FragmentListArtists_unlogged extends Fragment implements FragmentLi
 
     private void setDialogView(){
         myDialog = new Dialog(getContext());
-        //myDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         myDialog.setTitle("Sign Up");
-        myDialog.setContentView(R.layout.dialog_add_artist);
-        etAddName_Dialog = (TextInputLayout) myDialog.findViewById(R.id.tvArtistName_dialog);
-        etAddPhone_Dialog = (TextInputLayout) myDialog.findViewById(R.id.tvArtisPhone_dialog);
-        btnCheckIsLocated_Dialog = (MaterialButton) myDialog.findViewById(R.id.btnCheckLocation_dialog);
-        btnSignUp_Dialog = (MaterialButton) myDialog.findViewById(R.id.btnSignUp_dialog);
-        ivIsLocated_Dialog = (ImageView) myDialog.findViewById(R.id.ivCheckLocation_dialog);
+        myDialog.setContentView(R.layout.dialog_add_artist_unlogged);
+        etAddName_Dialog = (TextInputLayout) myDialog.findViewById(R.id.tvArtistName_dialog_unlogged);
+        etAddPhone_Dialog = (TextInputLayout) myDialog.findViewById(R.id.tvArtisPhone_dialog_unlogged);
+        btnCheckIsLocated_Dialog = (MaterialButton) myDialog.findViewById(R.id.btnCheckLocation_dialog_unlogged);
+        btnSignUp_Dialog = (MaterialButton) myDialog.findViewById(R.id.btnSignUp_dialog_unlogged);
+        ivIsLocated_Dialog = (ImageView) myDialog.findViewById(R.id.ivCheckLocation_dialog_unlogged);
     }
 
     private void setDialogLogic(){
@@ -186,7 +183,7 @@ public class FragmentListArtists_unlogged extends Fragment implements FragmentLi
             ActivityCompat.requestPermissions(getActivity(), new String[]                           //If app doesn't have a permissions - ask for them
                     {Manifest.permission.ACCESS_FINE_LOCATION}, 101);
         }
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         Task<Location> task = fusedLocationClient.getLastLocation();
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
@@ -208,7 +205,8 @@ public class FragmentListArtists_unlogged extends Fragment implements FragmentLi
                         list.get(i).getName(),
                         list.get(i).getPhone(),
                         list.get(i).getId(),
-                        list.get(i).getUserId()));
+                        list.get(i).getUserId(),
+                        list.get(i).getIsCurrentlyOnStage()));
             }
             String eventName = preferenceUtils.getString("eventName_to_ListOfArtists");
             tvEventNameUnlogged.setText(eventName);
@@ -254,7 +252,8 @@ public class FragmentListArtists_unlogged extends Fragment implements FragmentLi
                     deviceID,
                     etAddName_Dialog.getEditText().getText().toString(),
                     etAddPhone_Dialog.getEditText().getText().toString(),
-                    hostID);
+                    hostID,
+                    false);
             Call<ItemArtist> call = jsonPlaceHolder.createArtist(newItemArtist);
             call.enqueue(new Callback<ItemArtist>() {
                 @Override
@@ -352,33 +351,4 @@ public class FragmentListArtists_unlogged extends Fragment implements FragmentLi
         return !(!validateArtistNameInput() | !validateArtistPhoneInput());
     }
 
-    CallbackInterfaceVoid callbackInterfaceVoid = new CallbackInterfaceVoid() {
-        @Override
-        public void onSuccess() {
-            if(validateInput() && artistIsAtLocation){
-                ItemArtist newItemArtist = new ItemArtist(
-                        etAddName_Dialog.getEditText().getText().toString(),
-                        etAddPhone_Dialog.getEditText().getText().toString(),
-                        deviceID,
-                        hostID);
-                Call<ItemArtist> call = jsonPlaceHolder.createArtist(newItemArtist);
-                call.enqueue(new Callback<ItemArtist>() {
-                    @Override
-                    public void onResponse(Call<ItemArtist> call, Response<ItemArtist> response) {
-                        Log.d("'Sign Up'", " SUCCESS");
-                        lstItemArtists.add(newItemArtist);
-                        recyclerAdapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onFailure(Call<ItemArtist> call, Throwable t) {
-                        Log.d("'Sign Up'", t.getMessage());
-                    }
-                });
-            }
-            else {
-                ivIsLocated_Dialog.setImageResource(R.drawable.check_question_fail);
-            }
-        }
-    };
 }

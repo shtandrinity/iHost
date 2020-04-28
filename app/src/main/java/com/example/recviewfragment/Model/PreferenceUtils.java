@@ -1,4 +1,4 @@
-package com.example.recviewfragment;
+package com.example.recviewfragment.Model;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
