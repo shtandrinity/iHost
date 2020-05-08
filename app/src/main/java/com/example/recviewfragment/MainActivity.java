@@ -37,10 +37,10 @@ public class MainActivity extends AppCompatActivity{
 
         tabLayout.setupWithViewPager(viewPager);
 
-        tabLayout.getTabAt(0).setIcon(R.drawable.instagram);
-        tabLayout.getTabAt(1).setIcon(R.drawable.list);
-        tabLayout.getTabAt(2).setIcon(R.drawable.host);
-        viewPager.setCurrentItem(1);
+        //tabLayout.getTabAt(0).setIcon(R.drawable.instagram);
+        tabLayout.getTabAt(0).setIcon(R.drawable.list);
+        tabLayout.getTabAt(1).setIcon(R.drawable.host);
+        viewPager.setCurrentItem(0);
 
 
     }

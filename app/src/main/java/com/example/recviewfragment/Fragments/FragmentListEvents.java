@@ -18,10 +18,12 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.recviewfragment.API.ApiClient;
 import com.example.recviewfragment.API.JsonPlaceHolder;
@@ -57,22 +59,18 @@ import retrofit2.Response;
 
 public class FragmentListEvents extends Fragment implements OnMapReadyCallback {
 
-    private View v;
     private List<ItemHost> lstItemEvents = new ArrayList<>();
     private List<ItemHost> lstItemEventsAll = new ArrayList<>();
     private List<String> isInCity = new ArrayList<>();
     private RvAdapter_listEvents recyclerAdapter;
 
     private final String FRAGMENT_TAG = "listEvents_screen";
-    private JsonPlaceHolder jsonPlaceHolder;
 
     private PreferenceUtils preferenceUtils;
     private FusedLocationProviderClient fusedLocationClient;
+    private TextView tvListIsEmpty;
     private GoogleMap map;
     private List<Address> eventCityAddress = null;
-
-    LocationRequest mLocationRequest;
-    Location mLastLocation;
 
 
     public FragmentListEvents() {}
@@ -82,6 +80,7 @@ public class FragmentListEvents extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list_events, container, false);
+        tvListIsEmpty = v.findViewById(R.id.tvListEvents_listIsEmpty);
 
         preferenceUtils = new PreferenceUtils(getContext());
         //preferenceUtils.clearSavedInSharedPreference();
@@ -146,7 +145,7 @@ public class FragmentListEvents extends Fragment implements OnMapReadyCallback {
 //            ActivityCompat.requestPermissions(getActivity(), new String[]                           //If app doesn't have a permissions - ask for them
 //                    {Manifest.permission.ACCESS_FINE_LOCATION}, 101);
 //        }
-        mLocationRequest = new LocationRequest();
+        LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(120000); // two minute interval
         mLocationRequest.setFastestInterval(120000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
@@ -155,7 +154,7 @@ public class FragmentListEvents extends Fragment implements OnMapReadyCallback {
             @Override
             public void onSuccess(Location location) {
                 if(location!=null){
-                    callbackInterfaceMap.getEventsListInCity(location);
+                    getListOfEventsInCurrentCity.getEventsListInCity(location);
                 }
             }
         });
@@ -173,7 +172,7 @@ public class FragmentListEvents extends Fragment implements OnMapReadyCallback {
         map = googleMap;
     }
 
-    private CallbackInterfaceMap callbackInterfaceMap = new CallbackInterfaceMap() {
+    private CallbackInterfaceMap getListOfEventsInCurrentCity = new CallbackInterfaceMap() {
         @Override
         public void getEventsListInCity(Location location) {
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -188,7 +187,7 @@ public class FragmentListEvents extends Fragment implements OnMapReadyCallback {
             }
             String userCity = userCityAddress.get(0).getLocality();
 
-            jsonPlaceHolder = ApiClient.getInterface();
+            JsonPlaceHolder jsonPlaceHolder = ApiClient.getInterface();
             Call<List<ItemHost>> call = jsonPlaceHolder.getHostList();
             call.enqueue(new Callback<List<ItemHost>>() {
                 @SuppressLint("LongLogTag")
@@ -241,6 +240,12 @@ public class FragmentListEvents extends Fragment implements OnMapReadyCallback {
                     recyclerAdapter.notifyDataSetChanged();
                     LatLngBounds bounds = builder.build();
                     map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 25));
+
+                    if(lstItemEvents.isEmpty()){
+                        tvListIsEmpty.setVisibility(View.VISIBLE);
+                        tvListIsEmpty.setMovementMethod(LinkMovementMethod.getInstance());
+                        //tvListIsEmpty.setText("I'm sorry, there is no events in your city");
+                    }
 
                     Log.d("lstItemEvents SIZE is", String.valueOf(lstItemEvents.size()));
                     Log.d("lstItemEventsAll SIZE is", String.valueOf(lstItemEventsAll.size()));

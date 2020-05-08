@@ -1,0 +1,256 @@
+{
+  "hosts": [
+    {
+      "email": "superior@gmail.com",
+      "eventName": "Superior Jam",
+      "login": "superior",
+      "password": "8526000Qq",
+      "latitude": 41.8954142,
+      "longitude": -87.6629808,
+      "id": 1,
+      "isActive": false
+    },
+    {
+      "email": "shtandrinity@gmail.com",
+      "eventName": "Northside Bar & Grill Open Mic",
+      "password": "8526000Qq",
+      "login": "shtandrinity",
+      "latitude": 41.911706,
+      "longitude": -87.67726,
+      "id": 2,
+      "isActive": false
+    },
+    {
+      "email": "gommno7@gmail.com",
+      "eventName": "AliveOne Jam",
+      "password": "8526000Qq",
+      "login": "Jacob",
+      "latitude": 41.931724,
+      "longitude": -87.648718,
+      "id": 3,
+      "isActive": false
+    },
+    {
+      "email": "fdc@gmail.com",
+      "eventName": "FDC Open Mic",
+      "password": "8526000Qq",
+      "login": "fdcstudios",
+      "latitude": 41.92454419999999,
+      "longitude": -87.700277,
+      "id": 4,
+      "isActive": false
+    },
+    {
+      "email": "hydepark@gmail.com",
+      "eventName": "Hyde Jam",
+      "password": "8526000Qq",
+      "login": "hydepark",
+      "latitude": 41.824224,
+      "longitude": -87.615906,
+      "id": 5,
+      "isActive": false
+    },
+    {
+      "email": "evanston@gmail.com",
+      "eventName": "Evanston Open Mic",
+      "password": "8526000Qq",
+      "login": "drey95music",
+      "latitude": 42.031318,
+      "longitude": -87.678417,
+      "id": 6,
+      "isActive": false
+    }
+  ],
+  "artists": [
+    {
+      "deviceId": "1eb5e6bb-d08b-4f3b-8d71-2b3aab6547c9",
+      "name": "MDQ",
+      "phone": "7738375513",
+      "id": 1,
+      "userId": 1,
+      "currentlyOnStage": false
+    },
+    {
+      "deviceId": "2eb5e6bb-d08b-4f3b-8d71-2b3aab6547c9",
+      "name": "Prismatix",
+      "phone": "2244427841",
+      "id": 2,
+      "userId": 1,
+      "currentlyOnStage": false
+    },
+    {
+      "deviceId": "3eb5e6bb-d08b-4f3b-8d71-2b3aab6547c9",
+      "name": "Anderson Paak",
+      "phone": "3246743463",
+      "id": 3,
+      "userId": 1,
+      "currentlyOnStage": false
+    },
+    {
+      "deviceId": "4eb5e6bb-d08b-4f3b-8d71-2b3aab6547c9",
+      "name": "Nirvana",
+      "phone": "7738375514",
+      "id": 4,
+      "hostId": 3,
+      "currentlyOnStage": false
+    },
+    {
+      "deviceId": "5eb5e6bb-d08b-4f3b-8d71-2b3aab6547c9",
+      "name": "Alice in Chains",
+      "phone": "2244427842",
+      "id": 5,
+      "userId": 3,
+      "currentlyOnStage": false
+    },
+    {
+      "deviceId": "6eb5e6bb-d08b-4f3b-8d71-2b3aab6547c9",
+      "name": "Soundgarden",
+      "phone": "3246743464",
+      "id": 6,
+      "userId": 3,
+      "currentlyOnStage": false
+    },
+    {
+      "deviceId": "9eb5e6bb-d08b-463b-8d71-2b3aaas547c9",
+      "name": "Human Bloom",
+      "phone": "7738375519",
+      "id": 7,
+      "userId": 1,
+      "currentlyOnStage": false
+    },
+    {
+      "deviceId": "9eb5e6bb-d08b-4f3b-8d71-2b3aab6547c9",
+      "name": "Jimi Hendrix",
+      "phone": "7738375516",
+      "id": 8,
+      "userId": 2,
+      "currentlyOnStage": false
+    },
+    {
+      "deviceId": "9eb5e6bb-d08b-413b-8d71-2b3aab6547c9",
+      "name": "Amtrac",
+      "phone": "2244427843",
+      "id": 9,
+      "userId": 2,
+      "currentlyOnStage": false
+    },
+    {
+      "deviceId": "9eb5e6bb-d08b-423b-8d71-2b3aab6547c9",
+      "name": "2Pac",
+      "phone": "3246743467",
+      "id": 10,
+      "userId": 2,
+      "currentlyOnStage": false
+    },
+    {
+      "deviceId": "9eb5e6bb-d08b-433b-8d71-2b3aab6547c9",
+      "name": "Ivan Dorn",
+      "phone": "7738375517",
+      "id": 11,
+      "hostId": 3,
+      "currentlyOnStage": false
+    },
+    {
+      "deviceId": "9eb5e6bb-d08b-443b-8d71-2b3aab6547c9",
+      "name": "Antoha MC",
+      "phone": "2244427844",
+      "id": 12,
+      "userId": 3,
+      "currentlyOnStage": false
+    },
+    {
+      "deviceId": "9eb5e6bb-d08b-453b-8d71-2b3aab6547c9",
+      "name": "Kaytranada",
+      "phone": "3246743467",
+      "id": 13,
+      "userId": 3,
+      "currentlyOnStage": false
+    },
+    {
+      "deviceId": "9eb5e6bb-d08b-463b-8d71-2b3aab6547c9",
+      "name": "Thundercat",
+      "phone": "7738375518",
+      "id": 14,
+      "userId": 1,
+      "currentlyOnStage": false
+    },
+    {
+      "deviceId": "7eb5e6bb-d08b-4f3b-8d71-2b3aab6547c9",
+      "name": "Snarky Puppy",
+      "phone": "7738375515",
+      "id": 15,
+      "userId": 1,
+      "currentlyOnStage": false
+    },
+    {
+      "deviceId": "9eb5e6bb-d08b-483b-8d71-2b3aab6547c9",
+      "name": "Miss April",
+      "phone": "3246743467",
+      "id": 16,
+      "userId": 3,
+      "currentlyOnStage": false
+    },
+    {
+      "deviceId": "9eb5e6bb-d08b-493b-8d71-2b3aab6547c9",
+      "name": "Tom Misch",
+      "phone": "7738375519",
+      "id": 17,
+      "userId": 2,
+      "currentlyOnStage": false
+    },
+    {
+      "deviceId": "9eb5e6bb-d08b-410b-8d71-2b3aab6547c9",
+      "name": "Detroit Swindle",
+      "phone": "2244427845",
+      "id": 18,
+      "userId": 2,
+      "currentlyOnStage": false
+    },
+    {
+      "deviceId": "9eb5e6bb-d08b-411b-8d71-2b3aab6547c9",
+      "name": "Braxton Cook",
+      "phone": "3246743467",
+      "id": 19,
+      "userId": 2,
+      "currentlyOnStage": false
+    },
+    {
+      "deviceId": "9eb5e6bb-d08b-412b-8d71-2b3aab6547c9",
+      "name": "Sunsay",
+      "phone": "7738375513",
+      "id": 20,
+      "hostId": 3,
+      "currentlyOnStage": false
+    },
+    {
+      "deviceId": "9eb5e6bb-d08b-414b-8d71-2b3aab6547c9",
+      "name": "Avelino",
+      "phone": "2244427846",
+      "id": 21,
+      "userId": 3,
+      "currentlyOnStage": false
+    },
+    {
+      "deviceId": "9eb5e6bb-d08b-415b-8d71-2b3aab6547c9",
+      "name": "James Francies",
+      "phone": "3246743467",
+      "id": 22,
+      "userId": 3,
+      "currentlyOnStage": false
+    },
+    {
+      "name": "sadasdd",
+      "phone": "12121212",
+      "id": 23,
+      "userId": 0,
+      "currentlyOnStage": false
+    },
+    {
+      "name": "sadasdd",
+      "phone": "121212122",
+      "id": 24,
+      "userId": 0,
+      "currentlyOnStage": false
+    }
+  ]
+}

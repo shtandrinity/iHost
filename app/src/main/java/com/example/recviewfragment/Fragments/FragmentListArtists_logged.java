@@ -116,6 +116,7 @@ public class FragmentListArtists_logged extends Fragment implements FragmentList
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder dragged, @NonNull RecyclerView.ViewHolder target) {
+                int tempArtistID;
 
                 int position_dragged = dragged.getAdapterPosition();
                 int position_target = target.getAdapterPosition();
@@ -124,14 +125,14 @@ public class FragmentListArtists_logged extends Fragment implements FragmentList
                 ItemArtist newDraggedArtist = lstItemArtists.get(position_target);                  //Thundercat
 
                 //Making sure that user cannot move around Artists who are before Artistu who's currently highlighted
-                if (position_dragged<selectedPosition){
+                if (position_dragged<selectedPosition || position_target<selectedPosition){
                     return false;
                 }
                 else if(newDraggedArtist==null || newTargetArtist==null ){
                     return false;
                 }
 
-                int tempArtistID = newTargetArtist.getId();
+                tempArtistID = newTargetArtist.getId();
                 newTargetArtist.setId(newDraggedArtist.getId());
                 newDraggedArtist.setId(tempArtistID);
 
@@ -253,7 +254,7 @@ public class FragmentListArtists_logged extends Fragment implements FragmentList
                     callPreviousArtistUpdate.enqueue(new Callback<ItemArtist>() {
                         @Override
                         public void onResponse(Call<ItemArtist> call, Response<ItemArtist> response) {
-                            Log.d("Selected artist #" + response.body().getId(), "UPDATED");
+                            Log.d("Selected artist #" + response.body(), "UPDATED");
                             //myRecyclerView.findViewHolderForAdapterPosition(previousPosition);
                             recyclerAdapter.notifyDataSetChanged();
                             selectedPosition++;
@@ -266,7 +267,7 @@ public class FragmentListArtists_logged extends Fragment implements FragmentList
                         }
                     });
 
-                    Log.d("Previous artist #" + response.body().getId(), "UPDATED");
+                    Log.d("Previous artist #" + response.body(), "UPDATED");
                 }
 
                 @Override

@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 public class ViewPageAdapter extends FragmentStatePagerAdapter {
 
-    private static int NUM_ITEMS = 3;
+    private static int NUM_ITEMS = 2;
     private FragmentManager mFragmentManager;
     private Context mContext;
     HashMap<Integer, String> mFragmentTags;
@@ -35,9 +35,9 @@ public class ViewPageAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
 
         switch (position){
-            case 0: return new FragmentInsta();
-            case 1: return new FragmentListEvents();
-            case 2: return new FragmentHostUnlogged();
+            //case 0: return new FragmentInsta();
+            case 0: return new FragmentListEvents();
+            case 1: return new FragmentHostUnlogged();
             default:
                 return new FragmentListArtists_logged();
         }

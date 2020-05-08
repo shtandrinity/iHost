@@ -27,6 +27,18 @@
             android:layout_height="300dp"
             android:name="com.google.android.gms.maps.SupportMapFragment"/>
 
+        <TextView
+            android:id="@+id/tvListEvents_listIsEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/blue"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:text="@string/messageWithLink" />/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listEvents_recyclerView"
             android:paddingTop="10dp"
