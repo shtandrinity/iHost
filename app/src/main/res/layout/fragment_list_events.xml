@@ -30,14 +30,14 @@
         <TextView
             android:id="@+id/tvListEvents_listIsEmpty"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:visibility="invisible"
             android:gravity="center"
             android:textAlignment="center"
             android:textColor="@color/blue"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:text="@string/messageWithLink" />/>
+        />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listEvents_recyclerView"

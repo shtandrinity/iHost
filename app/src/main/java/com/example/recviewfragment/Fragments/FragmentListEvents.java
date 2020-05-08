@@ -190,7 +190,7 @@ public class FragmentListEvents extends Fragment implements OnMapReadyCallback {
             JsonPlaceHolder jsonPlaceHolder = ApiClient.getInterface();
             Call<List<ItemHost>> call = jsonPlaceHolder.getHostList();
             call.enqueue(new Callback<List<ItemHost>>() {
-                @SuppressLint("LongLogTag")
+                @SuppressLint({"LongLogTag", "SetTextI18n"})
                 @Override
                 public void onResponse(Call<List<ItemHost>> call, Response<List<ItemHost>> response) {
 
@@ -241,10 +241,14 @@ public class FragmentListEvents extends Fragment implements OnMapReadyCallback {
                     LatLngBounds bounds = builder.build();
                     map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 25));
 
+                    //If in User's city is no events - show a message
                     if(lstItemEvents.isEmpty()){
                         tvListIsEmpty.setVisibility(View.VISIBLE);
-                        tvListIsEmpty.setMovementMethod(LinkMovementMethod.getInstance());
-                        //tvListIsEmpty.setText("I'm sorry, there is no events in your city");
+                        ViewGroup.LayoutParams params = tvListIsEmpty.getLayoutParams();
+                        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                        tvListIsEmpty.setLayoutParams(params);
+                        //tvListIsEmpty.setMovementMethod(LinkMovementMethod.getInstance());
+                        tvListIsEmpty.setText("Please find a project's database and get an access to a private repository at https://github.com/shtandrinity/iHost/blob/master/db.json/");
                     }
 
                     Log.d("lstItemEvents SIZE is", String.valueOf(lstItemEvents.size()));
